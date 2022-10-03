@@ -31,12 +31,25 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'buddies.viewown']);
         Permission::create(['name' => 'buddies.delete']);
 
+        Permission::create(['name' => 'users.*']);
+        Permission::create(['name' => 'users.view']);
+        Permission::create(['name' => 'users.edit']);
+        Permission::create(['name' => 'users.viewown']);
+        Permission::create(['name' => 'users.delete']);
+
         // create roles and assign created permissions
         Role::create(['name' => 'docent'])
-            ->givePermissionTo(['leerlingen.*', 'buddies.*']);
+            ->givePermissionTo([
+                'leerlingen.view',
+                'leerlingen.edit',
+                'buddies.view',
+                'buddies.edit'
+            ]);
 
         Role::create(['name' => 'buddie'])
-            ->givePermissionTo(['leerlingen.viewown']);
+            ->givePermissionTo([
+                'leerlingen.viewown'
+            ]);
 
         Role::create(['name' => 'leerling']);
         
