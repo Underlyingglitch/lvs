@@ -3,7 +3,12 @@
 
 @section('content')
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Vragen</h1>
+        <h1 class="mt-4">
+            Vragen
+            @can('questions.add')
+                <a class="btn btn-success" href="{{ route('questions.create') }}"><i class="fas fa-plus"></i> Nieuw</a>
+            @endcan
+        </h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
             <li class="breadcrumb-item active">Vragen</li>
@@ -62,16 +67,11 @@
                                     <a class="btn btn-sm btn-info"
                                         href="{{ route('questions.show', ['id' => $question->id]) }}"><i
                                             class="fas fa-info"></i></a>
-                                    {{-- @can('leerlingen.edit')
-                                        <a class="btn btn-sm btn-warning"
-                                            href="{{ route('leerlingen.edit', ['id' => $leerling->id]) }}"><i
-                                                class="fas fa-pencil"></i></a>
-                                    @endcan
-                                    @can('leerlingen.delete')
+                                    @can('questions.delete')
                                         <a class="btn btn-sm btn-danger"
-                                            href="{{ route('leerlingen.destroy', ['id' => $leerling->id]) }}"><i
+                                            href="{{ route('questions.delete', ['id' => $question->id]) }}"><i
                                                 class="fas fa-trash"></i></a>
-                                    @endcan --}}
+                                    @endcan
                                 </td>
                             </tr>
                         @endforeach

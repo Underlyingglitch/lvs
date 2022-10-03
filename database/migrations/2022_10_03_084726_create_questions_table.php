@@ -15,16 +15,14 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('leerling_id')->unsigned()->nullable();
-            $table->bigInteger('buddie_id')->unsigned()->nullable();
+            $table->bigInteger('user_id')->unsigned();
             $table->string('title');
             $table->text('content');
             $table->bigInteger('answer_id')->unsigned()->nullable();
             $table->boolean('published')->default(false);
             $table->timestamps();
 
-            $table->foreign('leerling_id')->references('id')->on('leerlingen')->cascadeOnDelete();
-            $table->foreign('buddie_id')->references('id')->on('buddies')->cascadeOnDelete();
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreign('answer_id')->references('id')->on('answers')->cascadeOnDelete();
         });
     }

@@ -57,6 +57,8 @@ Route::controller(QuestionController::class)->group(function () {
     Route::prefix('questions')->group(function () {
         Route::name('questions.')->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/create', 'store')->name('store');
             Route::get('/{id}', 'show')->name('show');
             Route::get('/{id}/delete', 'delete')->name('delete');
             Route::post('/{id}/delete/confirm', 'destroy')->name('destroy');

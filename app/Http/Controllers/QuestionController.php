@@ -23,13 +23,8 @@ class QuestionController extends Controller
         if (Gate::allows('questions.view')) {
             $questions = Question::all();
         } else if (Gate::allows('questions.viewown')) {
-            if (auth()->user()->buddie != null) {
-                $questions = auth()->user()->leerling->questions->all();
-            } else {
-                $questions = auth()->user()->buddie->questions->all();
-            }
+            $questions = auth()->user()->questions->all();
         } else {
-            dd('none');
             abort(403);
         }
 
@@ -45,7 +40,9 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        //
+        $this->authorize('questions.add');
+
+        return view('questions.create');
     }
 
     /**
@@ -56,7 +53,22 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('questions.add');
+
+        $question = new Question();
+        
+        if (auth()->user()->buddie != null) {
+            $question->buddie_id = auth()->user()->id;
+        } else {
+            $question->leerling_id = auth()->user()->id;
+        }
+
+        $question->title = $request->title;
+        $question->content = $request->content;
+
+        $question->save();
+
+        return redirect()->route('questions.index');
     }
 
     /**
@@ -71,10 +83,21 @@ class QuestionController extends Controller
             abort(403);
         }
 
-        $question = Question::find($id);
+        $question = Question::findOrFail($id);
 
-        if (auth()->user()->id == $question->buddie_id || auth()->user()->id == $question->leerling_id) {
-            abort(403);
+        if (auth()->user()->buddie != null) {
+            // User is buddie
+            if (auth()->user()->buddie->id != $question->buddie_id) {
+                // User's buddie id is not the buddie id of this question
+                abort(403);
+            }
+        }
+        if (auth()->user()->leerling != null) {
+            // User is buddie
+            if (auth()->user()->leerling->id != $question->leerling_id) {
+                // User's buddie id is not the buddie id of this question
+                abort(403);
+            }
         }
 
         return view('questions.show', [

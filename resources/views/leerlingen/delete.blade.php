@@ -14,9 +14,9 @@
         </ol>
 
         <div>
-            Weet u zeker dat u <b>{{ $leerling->user->name }}</b> als leerling wilt verwijderen? Alle data zal verloren
-            gaan,
-            maar het gebruikersaccount blijft behouden.
+            Weet u zeker dat u <b>{{ $leerling->user->name }}</b> wilt verwijderen? Alle data verbonden met dit
+            gebruikersaccount zal verloren
+            gaan en de gebruiker zal niet meer kunnen inloggen. Deze actie kan niet ongedaan gemaakt worden!
         </div>
         <form action="{{ route('leerlingen.destroy', ['id' => $leerling->id]) }}" method="post">
             @csrf

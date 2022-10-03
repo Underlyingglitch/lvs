@@ -14,8 +14,9 @@
         </ol>
 
         <div>
-            Weet u zeker dat u <b>{{ $buddie->user->name }}</b> als buddie wilt verwijderen? Alle data zal verloren gaan,
-            maar het gebruikersaccount blijft behouden.
+            Weet u zeker dat u <b>{{ $buddie->user->name }}</b> wilt verwijderen? Alle data verbonden met dit
+            gebruikersaccount zal verloren
+            gaan en de gebruiker zal niet meer kunnen inloggen. Deze actie kan niet ongedaan gemaakt worden!
         </div>
         <form action="{{ route('buddies.destroy', ['id' => $buddie->id]) }}" method="post">
             @csrf
