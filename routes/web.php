@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BuddieController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\LeerlingenController;
@@ -46,6 +47,17 @@ Route::controller(UserController::class)->group(function () {
             Route::get('/{id}', 'show')->name('show');
             Route::get('/{id}/edit', 'edit')->name('edit');
             Route::post('/{id}/edit', 'update');
+            Route::get('/{id}/delete', 'delete')->name('delete');
+            Route::post('/{id}/delete/confirm', 'destroy')->name('destroy');
+        });
+    });
+});
+
+Route::controller(QuestionController::class)->group(function () {
+    Route::prefix('questions')->group(function () {
+        Route::name('questions.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{id}', 'show')->name('show');
             Route::get('/{id}/delete', 'delete')->name('delete');
             Route::post('/{id}/delete/confirm', 'destroy')->name('destroy');
         });

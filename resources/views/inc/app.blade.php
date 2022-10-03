@@ -35,6 +35,11 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Dashboard
                     </a>
+                    <a class="nav-link @if ($page_id == 'questions') active @endif"
+                        href="{{ route('questions.index') }}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-question-circle"></i></div>
+                        Vragen
+                    </a>
                     @if (auth()->user()->can('leerlingen.viewown') &&
                         auth()->user()->cannot('leerlingen.view'))
                         <a class="nav-link @if ($page_id == 'leerlingen') active @endif"

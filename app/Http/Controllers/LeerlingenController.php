@@ -23,7 +23,7 @@ class LeerlingenController extends Controller
         } else if (Gate::allows('leerlingen.viewown')) {
             $leerlingen = auth()->user()->buddie->leerlingen->all();
         } else {
-            abort(403, 'Geen rechten');
+            abort(403);
         }
 
         $leerlingen = Leerling::all();
