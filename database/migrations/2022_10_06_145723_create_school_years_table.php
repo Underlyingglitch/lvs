@@ -13,15 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('questions', function (Blueprint $table) {
+        Schema::create('school_years', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsigned();
-            $table->string('title');
-            $table->text('content');
-            $table->boolean('published')->default(false);
+            $table->string('name');
+            $table->timestamp('start');
+            $table->timestamp('end');
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
         });
     }
 
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('questions');
+        Schema::dropIfExists('school_years');
     }
 };

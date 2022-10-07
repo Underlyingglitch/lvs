@@ -28,6 +28,6 @@ class LoginController extends Controller
             return back()->with('error', 'Ongeldige inloggegevens');
         }
 
-        return redirect('/')->with('page_id', 'dashboard');
+        return redirect()->intended('/');
     }
 }

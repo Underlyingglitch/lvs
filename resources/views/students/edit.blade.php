@@ -1,14 +1,14 @@
 @extends('inc.app')
-{{ $page_id = 'leerlingen' }}
+@php($page_id = 'students')
 
 @section('content')
     <div class="container-fluid px-4">
         <h1 class="mt-4">Leerling bewerken</h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('leerlingen.index') }}">Leerlingen</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('students.index') }}">Leerlingen</a></li>
             <li class="breadcrumb-item"><a
-                    href="{{ route('leerlingen.show', ['id' => $leerling->id]) }}">{{ $leerling->user->name }}</a></li>
+                    href="{{ route('students.show', ['id' => $student->id]) }}">{{ $student->user->name }}</a></li>
             <li class="breadcrumb-item active">Bewerken</li>
         </ol>
         <div class="card mb-4">
@@ -17,23 +17,23 @@
                 Persoonlijke gegevens
             </div>
             <div class="card-body">
-                <form action="{{ URL::signedRoute('leerlingen.edit', ['id' => $leerling->id]) }}" method="post">
+                <form action="{{ URL::signedRoute('students.edit', ['id' => $student->id]) }}" method="post">
                     @csrf
                     <div class="row">
                         <div class="col-md-4">
                             <label for="name">Naam</label>
                             <input class="form-control" type="text" name="name" id="name"
-                                value="{{ $leerling->user->name }}">
+                                value="{{ $student->user->name }}">
                         </div>
                         <div class="col-md-4">
                             <label for="leerlingnummer">Leerlingnummer</label>
                             <input class="form-control" type="text" name="leerlingnummer" id="leerlingnummer"
-                                value="{{ $leerling->leerlingnummer }}">
+                                value="{{ $student->leerlingnummer }}">
                         </div>
                         <div class="col-md-4">
                             <label for="klas">Klas</label>
                             <input class="form-control" type="text" name="klas" id="klas"
-                                value="{{ $leerling->klas }}">
+                                value="{{ $student->klas }}">
                         </div>
                     </div>
                     <br>
@@ -41,7 +41,7 @@
                         <div class="col-md-5">
                             <label for="email">Email adres</label>
                             <input class="form-control" type="text" name="email" id="email"
-                                value="{{ $leerling->user->email }}">
+                                value="{{ $student->user->email }}">
                         </div>
                         <div class="col-md-3">
                             <label for="buddie">Buddie</label>
@@ -49,7 +49,7 @@
                                 <option value="none">--</option>
                                 @foreach ($buddies as $buddie)
                                     <option value="{{ $buddie->id }}"
-                                        @if ($leerling->buddie == null) @elseif($buddie->id == $leerling->buddie->id) selected @endif>
+                                        @if ($student->buddie == null) @elseif($buddie->id == $student->buddie->id) selected @endif>
                                         {{ $buddie->user->name }}</option>
                                 @endforeach
                             </select>
@@ -72,7 +72,7 @@
             <div class="card mb-4">
                 <div class="card-header">
                     <i class="fas fa-users"></i>
-                    Gekoppelde leerlingen
+                    Gekoppelde students
                 </div>
                 <div class="card-body">
                     

@@ -33,7 +33,7 @@
             <div class="card mb-4">
                 <div class="card-header">
                     <i class="fas fa-users"></i>
-                    Gekoppelde leerlingen
+                    Gekoppelde students
                 </div>
                 <div class="card-body">
                     

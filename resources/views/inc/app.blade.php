@@ -12,16 +12,16 @@
         </form>
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-            <li class="nav-item dropdown">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i></a>
+            </li>
+            {{-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    {{-- <li><a class="dropdown-item" href="#!">Settings</a></li>
-                <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                <li><hr class="dropdown-divider" /></li> --}}
                     <li><a class="dropdown-item" href="{{ route('logout') }}">Uitloggen</a></li>
                 </ul>
-            </li>
+            </li> --}}
         </ul>
     </nav>
 @endsection
@@ -39,21 +39,59 @@
                         href="{{ route('questions.index') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-question-circle"></i></div>
                         Vragen
+                        {{-- @can('questions.view')
+                            <span class="badge rounded-pill text-bg-primary">{{ Question::withCount('answer') }}</span>
+                        @endcan --}}
                     </a>
-                    @if (auth()->user()->can('leerlingen.viewown') &&
-                        auth()->user()->cannot('leerlingen.view'))
-                        <a class="nav-link @if ($page_id == 'leerlingen') active @endif"
-                            href="{{ route('leerlingen.index') }}">
+                    @can('schedule.view')
+                        <a class="nav-link @if ($page_id == 'schedule') active @endif"
+                            href="{{ route('schedule.index') }}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-calendar"></i></div>
+                            Rooster
+                        </a>
+                    @endcan
+                    @if (auth()->user()->can('students.viewown') &&
+                        auth()->user()->cannot('students.view'))
+                        {{-- <a class="nav-link @if ($page_id != 'students') collapsed @endif" href="#"
+                            data-bs-toggle="collapse" data-bs-target="#collapseStudents"
+                            aria-expanded="@if ($page_id == 'students') true @else false @endif"
+                            aria-controls="collapseStudents">
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                             Leerlingen
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
+                        <div class="collapse @if ($page_id != 'students') open @endif" id="collapseStudents"
+                            aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="layout-static.html">Static Navigation</a>
+                                <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
+                            </nav>
+                        </div> --}}
+                        <a class="nav-link @if ($page_id != 'students') collapsed @endif" href="#"
+                            data-bs-toggle="collapse" data-bs-target="#collapseStudents"
+                            aria-expanded="@if ($page_id == 'students') true @else false @endif"
+                            aria-controls="collapseStudents">
+                            <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                            Leerlingen
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse @if ($page_id == 'students') show @endif" id="collapseStudents"
+                            aria-labelledby="headingOne">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                @php($students = auth()->user()->buddie->students)
+                                @foreach ($students as $student)
+                                    <a class="nav-link"
+                                        href="{{ route('students.show', ['id' => $student->id]) }}">{{ $student->user->name }}</a>
+                                @endforeach
+                            </nav>
+                        </div>
                     @endif
-                    @canany(['leerlingen.view', 'buddies.view', 'users.view'])
+                    @canany(['students.view', 'buddies.view', 'users.view'])
                         <div class="sb-sidenav-menu-heading">Beheer</div>
                     @endcan
-                    @can('leerlingen.view')
-                        <a class="nav-link @if ($page_id == 'leerlingen') active @endif"
-                            href="{{ route('leerlingen.index') }}">
+                    @can('students.view')
+                        <a class="nav-link @if ($page_id == 'students') active @endif"
+                            href="{{ route('students.index') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                             Leerlingen
                         </a>
@@ -61,7 +99,7 @@
                     @can('buddies.view')
                         <a class="nav-link @if ($page_id == 'buddies') active @endif" href="{{ route('buddies.index') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                            Buddies
+                            Buddy's
                         </a>
                     @endcan
                     @can('users.view')

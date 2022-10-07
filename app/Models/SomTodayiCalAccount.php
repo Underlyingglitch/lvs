@@ -3,23 +3,19 @@
 namespace App\Models;
 
 use App\Models\User;
-use App\Models\Answer;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use OwenIt\Auditing\Contracts\Auditable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Question extends Model implements Auditable
+class SomTodayiCalAccount extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
     use HasFactory;
 
+    protected $table = "somtoday_ical_accounts";
+
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function answer()
-    {
-        return $this->hasOne(Answer::class);
     }
 }

@@ -3,10 +3,10 @@
 
 @section('content')
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Buddie verwijderen</h1>
+        <h1 class="mt-4">Buddy verwijderen</h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('buddies.index') }}">Buddies</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('buddies.index') }}">Buddy's</a></li>
             <li class="breadcrumb-item"><a
                     href="{{ route('buddies.show', ['id' => $buddie->id]) }}">{{ $buddie->user->name }}</a>
             </li>

@@ -4,7 +4,7 @@
 @section('content')
     <div class="container-fluid px-4">
         <h1 class="mt-4">
-            Buddie details
+            Buddy details
             @can('buddies.edit')
                 <a class="btn btn-warning" href="{{ route('buddies.edit', ['id' => $buddie->id]) }}">Bewerk</a>
             @endcan
@@ -14,7 +14,7 @@
         </h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('buddies.index') }}">Buddies</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('buddies.index') }}">Buddy's</a></li>
             <li class="breadcrumb-item active">{{ $buddie->user->name }}</li>
         </ol>
         <div class="card mb-4">
@@ -66,7 +66,7 @@
                                 <th>Leerlingnummer</th>
                                 <th>Klas</th>
                             </tr>
-                            @foreach ($buddie->leerlingen as $leerling)
+                            @foreach ($buddie->students as $leerling)
                                 <tr>
                                     <td>
                                         <a class="btn-link" href="#">

@@ -3,15 +3,15 @@
 
 @section('content')
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Buddies</h1>
+        <h1 class="mt-4">Buddy's</h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-            <li class="breadcrumb-item active">Buddies</li>
+            <li class="breadcrumb-item active">Buddy's</li>
         </ol>
         <div class="card mb-4">
             <div class="card-header">
                 <i class="fas fa-table me-1"></i>
-                Overzicht buddies
+                Overzicht buddy's
             </div>
             <div class="card-body">
                 <table id="dataTable" style="display:none">
@@ -20,6 +20,7 @@
                             <th>Leerlingnummer</th>
                             <th>Naam</th>
                             <th>Email</th>
+                            <th>Klas</th>
                             <th>Leerlingen</th>
                             <th>Laatst gezien</th>
                             <th>Acties</th>
@@ -30,6 +31,7 @@
                             <th>Leerlingnummer</th>
                             <th>Naam</th>
                             <th>Email</th>
+                            <th>Klas</th>
                             <th>Leerlingen</th>
                             <th>Laatst gezien</th>
                             <th>Acties</th>
@@ -41,7 +43,8 @@
                                 <td>{{ $buddie->leerlingnummer }}</td>
                                 <td>{{ $buddie->user->name }}</td>
                                 <td>{{ $buddie->user->email }}</td>
-                                <td>{{ $buddie->leerlingen->count() }}</td>
+                                <td>{{ $buddie->klas }}</td>
+                                <td>{{ $buddie->students->count() }}</td>
                                 <td>
                                     @if (strtotime($buddie->user->last_seen) > strtotime('-1 minutes'))
                                         <span class="text-success">Online</span>

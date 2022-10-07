@@ -4,7 +4,7 @@
 @section('content')
     <div class="container-fluid px-4">
         <h1 class="mt-4">
-            Leerling details
+            Vraag #{{ $question->id }}
             @can('questions.delete')
                 <a class="btn btn-danger" href="{{ route('questions.destroy', ['id' => $question->id]) }}">Verwijder</a>
             @endcan
@@ -19,23 +19,30 @@
                 {{ $question->title }}
             </div>
             <div class="card-body">
-
+                {{ $question->content }}
             </div>
-            <div class="card-footer small text-muted">Door: {{ $question->getOwner() }} op {{ $question->created_at }}
+            <div class="card-footer small text-muted">Door: {{ $question->user->name }} op {{ $question->created_at }}
             </div>
         </div>
-        <div class="row">
-            {{-- <div class="col-lg-6">
+        @if ($question->answer)
             <div class="card mb-4">
                 <div class="card-header">
-                    <i class="fas fa-users"></i>
-                    Gekoppelde leerlingen
+                    Antwoord
                 </div>
                 <div class="card-body">
-                    
+                    {{ $question->answer->content }}
+                </div>
+                <div class="card-footer small text-muted">Door: {{ $question->answer->user->name }} op
+                    {{ $question->answer->created_at }}
                 </div>
             </div>
-        </div> --}}
-        </div>
+        @elseif(auth()->user()->can('answers.add'))
+            <form action="{{ route('questions.answer', ['id' => $question->id]) }}" method="post">
+                @csrf
+                <textarea class="form-control" name="content" cols="30" rows="5" placeholder="Beantwoord deze vraag"></textarea>
+                <br>
+                <input class="btn btn-primary" type="submit" value="Antwoord plaatsen">
+            </form>
+        @endif
     </div>
 @endsection

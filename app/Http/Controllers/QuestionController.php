@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answer;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -57,11 +58,7 @@ class QuestionController extends Controller
 
         $question = new Question();
         
-        if (auth()->user()->buddie != null) {
-            $question->buddie_id = auth()->user()->id;
-        } else {
-            $question->leerling_id = auth()->user()->id;
-        }
+        $question->user_id = auth()->user()->id;
 
         $question->title = $request->title;
         $question->content = $request->content;
@@ -85,24 +82,27 @@ class QuestionController extends Controller
 
         $question = Question::findOrFail($id);
 
-        if (auth()->user()->buddie != null) {
-            // User is buddie
-            if (auth()->user()->buddie->id != $question->buddie_id) {
-                // User's buddie id is not the buddie id of this question
-                abort(403);
-            }
-        }
-        if (auth()->user()->leerling != null) {
-            // User is buddie
-            if (auth()->user()->leerling->id != $question->leerling_id) {
-                // User's buddie id is not the buddie id of this question
-                abort(403);
-            }
+        if ($question->user->id != auth()->user()->id) {
+            abort(403);
         }
 
         return view('questions.show', [
             'question' => $question
         ]);
+    }
+
+    public function answer($id, Request  $request)
+    {
+        $this->authorize('answers.add');
+
+        $answer = new Answer();
+        $answer->content = $request->content;
+        $answer->question_id = $id;
+        $answer->user_id = auth()->user()->id;
+
+        $answer->save();
+
+        return redirect()->back();
     }
 
     /**

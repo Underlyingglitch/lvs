@@ -3,9 +3,10 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 
 class DatabaseSeeder extends Seeder
@@ -29,11 +30,11 @@ class DatabaseSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create permissions
-        Permission::create(['name' => 'leerlingen.*']);
-        Permission::create(['name' => 'leerlingen.view']);
-        Permission::create(['name' => 'leerlingen.edit']);
-        Permission::create(['name' => 'leerlingen.viewown']);
-        Permission::create(['name' => 'leerlingen.delete']);
+        Permission::create(['name' => 'students.*']);
+        Permission::create(['name' => 'students.view']);
+        Permission::create(['name' => 'students.edit']);
+        Permission::create(['name' => 'students.viewown']);
+        Permission::create(['name' => 'students.delete']);
 
         Permission::create(['name' => 'buddies.*']);
         Permission::create(['name' => 'buddies.view']);
@@ -53,36 +54,45 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'questions.delete']);
 
         Permission::create(['name' => 'answers.add']);
+        Permission::create(['name' => 'answers.publish']);
         Permission::create(['name' => 'answers.delete']);
+
+        Permission::create(['name' => 'schedule.view']);
 
         // create roles and assign created permissions
         Role::create(['name' => 'docent'])
             ->givePermissionTo([
-                'leerlingen.view',
-                'leerlingen.edit',
+                'students.view',
+                'students.edit',
                 'buddies.view',
                 'buddies.edit',
                 'questions.view',
                 'questions.delete',
                 'answers.add',
+                'answers.publish',
                 'answers.delete'
             ]);
 
         Role::create(['name' => 'buddie'])
             ->givePermissionTo([
-                'leerlingen.viewown',
+                'students.viewown',
                 'questions.view',
                 'questions.add',
-                'answers.add'
+                'answers.add',
+                'schedule.view'
             ]);
 
         Role::create(['name' => 'leerling'])
             ->givePermissionTo([
                 'questions.viewown',
-                'questions.add'
+                'questions.add',
+                'schedule.view'
             ]);
         
         Role::create(['name' => 'admin'])
             ->givePermissionTo(Permission::all());
+
+        $user = User::find(1);
+        $user->assignRole('docent');
     }
 }

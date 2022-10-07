@@ -1,14 +1,13 @@
 @extends('inc.app')
-
-{{ $page_id = 'dashboard' }}
+@php($page_id = 'schedule')
 
 @section('content')
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Dashboard</h1>
+        <h1 class="mt-4">Rooster</h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-            <li class="breadcrumb-item active">Dashboard</li>
+            <li class="breadcrumb-item">Rooster</li>
         </ol>
-
-        Dashboard in ontwikkeling
-    @endsection
+        <i>Binnenkort kun je hier vrijstellingen regelen</i>
+    </div>
+@endsection

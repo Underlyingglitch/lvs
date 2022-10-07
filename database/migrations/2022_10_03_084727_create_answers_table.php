@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('questions', function (Blueprint $table) {
+        Schema::create('answers', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsigned();
-            $table->string('title');
+            $table->bigInteger('user_id')->unsigned()->nullable();
+            $table->bigInteger('question_id')->unsigned()->nullable();
             $table->text('content');
-            $table->boolean('published')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreign('question_id')->references('id')->on('questions')->cascadeOnDelete();
         });
     }
 

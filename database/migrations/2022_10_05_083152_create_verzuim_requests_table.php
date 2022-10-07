@@ -13,16 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('leerlingen', function (Blueprint $table) {
+        Schema::create('verzuim_requests', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('buddie_id')->unsigned()->nullable();
-            $table->integer('leerlingnummer')->nullable();
-            $table->string('klas')->nullable();
+            $table->timestamp('datetime');
+            $table->string('vak');
+            $table->bigInteger('signed_by')->unsigned()->nullable();
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->foreign('buddie_id')->references('id')->on('buddies')->nullOnDelete();
         });
     }
 
@@ -33,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('leerlingen');
+        Schema::dropIfExists('verzuim_requests');
     }
 };

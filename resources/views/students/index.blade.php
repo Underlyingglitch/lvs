@@ -1,5 +1,5 @@
 @extends('inc.app')
-{{ $page_id = 'leerlingen' }}
+@php($page_id = 'students')
 
 @section('content')
     <div class="container-fluid px-4">
@@ -20,7 +20,8 @@
                             <th>Leerlingnummer</th>
                             <th>Naam</th>
                             <th>Email</th>
-                            <th>Buddie</th>
+                            <th>Klas</th>
+                            <th>Buddy</th>
                             <th>Laatst gezien</th>
                             <th>Acties</th>
                         </tr>
@@ -30,46 +31,48 @@
                             <th>Leerlingnummer</th>
                             <th>Naam</th>
                             <th>Email</th>
-                            <th>Buddie</th>
+                            <th>Klas</th>
+                            <th>Buddy</th>
                             <th>Laatst gezien</th>
                             <th>Acties</th>
                         </tr>
                     </tfoot>
                     <tbody>
-                        @foreach ($leerlingen as $leerling)
+                        @foreach ($students as $student)
                             <tr>
-                                <td>{{ $leerling->leerlingnummer }}</td>
-                                <td>{{ $leerling->user->name }}</td>
-                                <td>{{ $leerling->user->email }}</td>
+                                <td>{{ $student->leerlingnummer }}</td>
+                                <td>{{ $student->user->name }}</td>
+                                <td>{{ $student->user->email }}</td>
+                                <td>{{ $student->klas }}</td>
                                 <td>
-                                    @if ($leerling->buddie != null)
-                                        {{ $leerling->buddie->user->name }}
+                                    @if ($student->buddie != null)
+                                        {{ $student->buddie->user->name }}
                                     @else
                                         -
                                     @endif
                                 </td>
                                 <td>
-                                    @if (strtotime($leerling->user->last_seen) > strtotime('-1 minutes'))
+                                    @if (strtotime($student->user->last_seen) > strtotime('-1 minutes'))
                                         <span class="text-success">Online</span>
-                                    @elseif($leerling->user->last_seen == null)
+                                    @elseif($student->user->last_seen == null)
                                         <span class="text-secondary">Nooit</span>
                                     @else
                                         <span
-                                            class="text-secondary">{{ Carbon\Carbon::parse($leerling->user->last_seen)->diffForHumans() }}</span>
+                                            class="text-secondary">{{ Carbon\Carbon::parse($student->user->last_seen)->diffForHumans() }}</span>
                                     @endif
                                 </td>
                                 <td>
                                     <a class="btn btn-sm btn-info"
-                                        href="{{ route('leerlingen.show', ['id' => $leerling->id]) }}"><i
+                                        href="{{ route('students.show', ['id' => $student->id]) }}"><i
                                             class="fas fa-info"></i></a>
-                                    @can('leerlingen.edit')
+                                    @can('students.edit')
                                         <a class="btn btn-sm btn-warning"
-                                            href="{{ route('leerlingen.edit', ['id' => $leerling->id]) }}"><i
+                                            href="{{ route('students.edit', ['id' => $student->id]) }}"><i
                                                 class="fas fa-pencil"></i></a>
                                     @endcan
-                                    @can('leerlingen.delete')
+                                    @can('students.delete')
                                         <a class="btn btn-sm btn-danger"
-                                            href="{{ route('leerlingen.destroy', ['id' => $leerling->id]) }}"><i
+                                            href="{{ route('students.destroy', ['id' => $student->id]) }}"><i
                                                 class="fas fa-trash"></i></a>
                                     @endcan
                                 </td>

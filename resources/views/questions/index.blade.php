@@ -24,7 +24,6 @@
                         <tr>
                             <th>Titel</th>
                             <th>Eigenaar</th>
-                            <th>Type</th>
                             <th>Beantwoord</th>
                             <th>Gepubliceerd</th>
                             <th>Datum</th>
@@ -35,7 +34,6 @@
                         <tr>
                             <th>Titel</th>
                             <th>Eigenaar</th>
-                            <th>Type</th>
                             <th>Beantwoord</th>
                             <th>Gepubliceerd</th>
                             <th>Datum</th>
@@ -46,10 +44,9 @@
                         @foreach ($questions as $question)
                             <tr>
                                 <td>{{ $question->title }}</td>
-                                <td>{{ $question->getOwner() }}</td>
-                                <td>{{ $question->getOwnerType() }}</td>
+                                <td>{{ $question->user->name }}</td>
                                 <td>
-                                    @if ($question->answer_id != null)
+                                    @if ($question->answer)
                                         <span style="color: green"><i class="fas fa-check"></i></span>
                                     @else
                                         <span style="color: red"><i class="fas fa-times"></i></span>
