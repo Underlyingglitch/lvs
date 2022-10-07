@@ -4,14 +4,16 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Question;
+use App\Models\AbsenceRequest;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\SomTodayiCalAccount;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use OwenIt\Auditing\Contracts\Auditable;
+
 class User extends Authenticatable implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
@@ -60,7 +62,7 @@ class User extends Authenticatable implements Auditable
         return '-';
     }
 
-    public function Student()
+    public function student()
     {
         return $this->hasOne(Student::class);
     }
@@ -85,11 +87,18 @@ class User extends Authenticatable implements Auditable
         return $this->hasOne(SomTodayiCalAccount::class);
     }
 
+    // NOTE: THIS FEATURE IS DEPRECATED, DO NOT USE
     public function getType()
     {
+        dd('DEPRECATED FEATURE getType() WAS USED');
         if ($this->buddy != null) {
             return 'buddie';
         }
-        return 'Student';
+        return 'student';
+    }
+
+    public function absence_requests()
+    {
+        return $this->hasMany(AbsenceRequest::class);
     }
 }

@@ -59,6 +59,8 @@ class DatabaseSeeder extends Seeder
 
         Permission::create(['name' => 'schedule.view']);
 
+        Permission::create(['name' => 'absencerequest.view']);
+
         // create roles and assign created permissions
         Role::create(['name' => 'docent'])
             ->givePermissionTo([
@@ -70,7 +72,8 @@ class DatabaseSeeder extends Seeder
                 'questions.delete',
                 'answers.add',
                 'answers.publish',
-                'answers.delete'
+                'answers.delete',
+                'absencerequest.view'
             ]);
 
         Role::create(['name' => 'buddie'])
