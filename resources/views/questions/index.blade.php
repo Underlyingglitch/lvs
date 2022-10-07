@@ -19,7 +19,7 @@
                 Overzicht vragen
             </div>
             <div class="card-body">
-                <table id="dataTable" style="display:none">
+                <table id="dataTable" class="table table-striped table-bordered" style="display:none">
                     <thead>
                         <tr>
                             <th>Titel</th>
