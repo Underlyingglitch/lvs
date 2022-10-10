@@ -1,5 +1,5 @@
 @extends('inc.app')
-{{ $page_id = 'buddies' }}
+@php($page_id = 'buddies')
 
 @section('content')
     <div class="container-fluid px-4">

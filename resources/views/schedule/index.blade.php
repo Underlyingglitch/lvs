@@ -1,5 +1,5 @@
 @extends('inc.app')
-{{ $page_id = 'schedule' }}
+@php($page_id = 'schedule')
 
 @section('content')
     {{-- @foreach ($events as $event)
