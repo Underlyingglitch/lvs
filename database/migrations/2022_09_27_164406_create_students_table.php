@@ -19,10 +19,12 @@ return new class extends Migration
             $table->bigInteger('buddie_id')->unsigned()->nullable();
             $table->integer('leerlingnummer')->nullable();
             $table->string('klas')->nullable();
+            $table->unsignedBigInteger('school_year_id');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreign('buddie_id')->references('id')->on('buddies')->nullOnDelete();
+            $table->foreign('school_year_id')->references('id')->on('school_years')->cascadeOnDelete();
         });
     }
 

@@ -14,7 +14,8 @@
         </ol>
 
         <div>
-            Weet u zeker dat u de vraag van <b>{{ $question->user->name }}</b> wilt verwijderen?
+            Weet u zeker dat u de vraag van <b>{{ $question->user->name }}</b> met titel <b>{{ $question->title }}</b>
+            wilt verwijderen?
         </div>
         <form action="{{ route('questions.destroy', ['id' => $question->id]) }}" method="post">
             @csrf

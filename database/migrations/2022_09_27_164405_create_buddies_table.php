@@ -18,8 +18,11 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->integer('leerlingnummer')->nullable();
             $table->string('klas')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('school_year_id');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreign('school_year_id')->references('id')->on('school_years')->cascadeOnDelete();
         });
     }
 

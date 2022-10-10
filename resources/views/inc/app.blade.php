@@ -35,6 +35,10 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Dashboard
                     </a>
+                    <a class="nav-link" href="{{ route('projects.own') }}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-project-diagram"></i></div>
+                        Project
+                    </a>
                     <a class="nav-link @if ($page_id == 'questions') active @endif"
                         href="{{ route('questions.index') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-question-circle"></i></div>

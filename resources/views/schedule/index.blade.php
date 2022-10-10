@@ -16,32 +16,6 @@
             @foreach ($events as $day => $events)
                 <div class="col-md-2">
                     <b>{{ date('D', strtotime($day)) }} {{ $day }}</b>
-                    {{-- @foreach (array_filter($events, function ($event) use ($day) {
-        return date('d-m-Y', strtotime($event->DTSTART)) == $day;
-    }) as $event)
-                        @php($summary = explode(' - ', $event->SUMMARY))
-                        @php($color = 'lightgrey')
-                        <div style="margin-bottom: 10px; background-color: {{ $color }}">
-                            <div class="row" style="height: 40px">
-                                <div class="col-md-6">{{ $summary[1] }}</div>
-                                <div class="col-md-6" style="text-align: right">{{ $summary[0] }}</div>
-                            </div>
-                            <div class="row" style="height: 40px">
-                                <div class="col-md-6">{{ $summary[2] }}</div>
-                                <div class="col-md-6" style="text-align: right">
-                                    {{ date('H:m', strtotime($event->DTSTART)) }}</div>
-                            </div>
-                            @php
-                                $class = 'btn-info';
-                                if ($summary[1] == 'vwo6.loc') {
-                                    $class = 'btn-warning';
-                                }
-                            @endphp
-                            <button class="btn btn-sm {{ $class }}" style="margin: 10px; margin-top: 0">
-                                <i class="fas fa-question-circle"></i>
-                            </button>
-                        </div>
-                    @endforeach --}}
                     @foreach ($events as $event)
                         <div style="margin-bottom: 10px; background-color: {{ $event['background'] }}">
                             <div class="row" style="height: 40px">
@@ -54,8 +28,11 @@
                                     {{ date('H:m', strtotime($event['details']->DTSTART)) }}</div>
                             </div>
                             <a class="btn btn-sm {{ $event['button_class'] }}" style="margin: 10px; margin-top: 0"
-                                @if ($event['button_disabled']) disabled @endif
-                                href="{{ URL::signedRoute('schedule.request', ['timestamp' => strtotime($event['details']->DTSTART), 'vak' => $event['vak']]) }}">
+                                @if (!$event['button_disabled']) href="{{ URL::signedRoute('schedule.request', [
+                                    'timestamp' => $event['details']->DTSTART,
+                                    'vak' => $event['vak'],
+                                    'uid' => $event['details']->UID,
+                                ]) }}" @endif>
                                 <i class="fas fa-question-circle"></i>
                             </a>
                         </div>
@@ -65,17 +42,15 @@
 
         </div>
 
-        {{-- <table class="table">
-            <tr>
-                @foreach ($days as $day)
-                    <th>{{ $day }}</th>
-                @endforeach
-            </tr>
-            @for ($i = 1; $i <= 9; $i++)
-                <tr>
-                    <td>{{ $i }}</td>
-                </tr>
-            @endfor
-        </table> --}}
+        <div>
+            Betekenis kleuren:<br>
+            <ul>
+                <li>Lichtblauw = beschikbaar voor aanvraag</li>
+                <li>Rood = niet beschikbaar</li>
+                <li>Oranje = aanvraag wordt verwerkt</li>
+                <li>Groen = aanvraag goedgekeurd</li>
+            </ul>
+
+        </div>
     </div>
 @endsection

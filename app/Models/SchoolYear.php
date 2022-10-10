@@ -13,4 +13,9 @@ class SchoolYear extends Model
     {
         return $this->hasMany(AbsenceRequest::class);
     }
+
+    public static function current()
+    {
+        return SchoolYear::where('end', '=', null)->first()->id;
+    }
 }

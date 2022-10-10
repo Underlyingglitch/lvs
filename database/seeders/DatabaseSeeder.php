@@ -26,6 +26,21 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('Test')
         ]);
 
+        \App\Models\SomTodayiCalAccount::create([
+            'user_id' => 1,
+            'ical_url' => "https://elo.somtoday.nl/services/webdav/calendarfeed/99f5d02e-c928-47af-ba6a-1f72e364d753/121c780b-038f-49d6-9204-9c10c8d08eeb"
+        ]);
+
+        \App\Models\SchoolYear::create([
+            'name' => '21-22',
+            'start' => '2021-01-01',
+            'end' => '2021-12-31'
+        ]);
+        \App\Models\SchoolYear::create([
+            'name' => '22-23',
+            'start' => '2022-01-01'
+        ]);
+
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
@@ -52,14 +67,21 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'questions.viewown']);
         Permission::create(['name' => 'questions.add']);
         Permission::create(['name' => 'questions.delete']);
+        Permission::create(['name' => 'questions.publish']);
 
         Permission::create(['name' => 'answers.add']);
-        Permission::create(['name' => 'answers.publish']);
         Permission::create(['name' => 'answers.delete']);
 
         Permission::create(['name' => 'schedule.view']);
 
         Permission::create(['name' => 'absencerequest.view']);
+        Permission::create(['name' => 'absencerequest.add']);
+
+        Permission::create(['name' => 'projects.owns']);
+        Permission::create(['name' => 'projects.viewown']);
+        Permission::create(['name' => 'projects.view']);
+        Permission::create(['name' => 'projects.edit']);
+        Permission::create(['name' => 'projects.delete']);
 
         // create roles and assign created permissions
         Role::create(['name' => 'docent'])
@@ -70,10 +92,13 @@ class DatabaseSeeder extends Seeder
                 'buddies.edit',
                 'questions.view',
                 'questions.delete',
+                'questions.publish',
                 'answers.add',
-                'answers.publish',
                 'answers.delete',
-                'absencerequest.view'
+                'absencerequest.view',
+                'projects.view',
+                'projects.edit',
+                'projects.delete'
             ]);
 
         Role::create(['name' => 'buddie'])
@@ -82,20 +107,25 @@ class DatabaseSeeder extends Seeder
                 'questions.view',
                 'questions.add',
                 'answers.add',
-                'schedule.view'
+                'schedule.view',
+                'absencerequest.add',
+                'projects.viewown',
+                'projects.edit'
             ]);
 
         Role::create(['name' => 'leerling'])
             ->givePermissionTo([
                 'questions.viewown',
                 'questions.add',
-                'schedule.view'
+                'schedule.view',
+                'absencerequest.add',
+                'projects.owns'
             ]);
         
         Role::create(['name' => 'admin'])
             ->givePermissionTo(Permission::all());
 
         $user = User::find(1);
-        $user->assignRole('docent');
+        $user->assignRole('leerling');
     }
 }

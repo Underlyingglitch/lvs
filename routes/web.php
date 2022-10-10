@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BuddieController;
+use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\StudentsController;
@@ -62,6 +63,8 @@ Route::controller(QuestionController::class)->group(function () {
             Route::post('/create', 'store')->name('store');
             Route::get('/{id}', 'show')->name('show');
             Route::post('/{id}/answer', 'answer')->name('answer');
+            Route::get('/{id}/answer/delete', 'delete_answer')->name('delete_answer');
+            Route::get('/{id}/publish', 'publish')->name('publish');
             Route::get('/{id}/delete', 'delete')->name('delete');
             Route::post('/{id}/delete/confirm', 'destroy')->name('destroy');
         });
@@ -73,9 +76,18 @@ Route::controller(ScheduleController::class)->group(function () {
         Route::name('schedule.')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::post('/', 'post')->name('post');
-            Route::get('/request/{timestamp}/{vak}', 'request')->name('request');
+            Route::get('/request/{timestamp}/{vak}/{uid}', 'request')->name('request');
         });
     });
+});
+
+Route::controller(ProjectsController::class)->group(function () {
+    Route::prefix('projects')->group(function () {
+        Route::name('projects.')->group(function () {
+            Route::get('/', 'index')->name('index');
+        });
+    });
+    Route::get('/project', 'own')->name('projects.own');
 });
 
 // Authentication routes

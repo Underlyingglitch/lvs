@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\SomTodayiCalAccount;
 use Sabre\VObject\Reader as Calendar;
 use App\Jobs\PullScheduleData;
+use App\Models\AbsenceRequest;
+use App\Models\SchoolYear;
 
 class ScheduleController extends Controller
 {
@@ -42,6 +44,7 @@ class ScheduleController extends Controller
         foreach ($vcalendar->VEVENT as $event) {
             if (in_array(date('d-m-Y', strtotime($event->DTSTART)), $days)) {
                 $summary = explode(' - ', $event->SUMMARY);
+                if (count($summary) != 3) continue;
 
                 $background = 'lightgrey';
                 
@@ -58,8 +61,17 @@ class ScheduleController extends Controller
         }
         foreach ($events as $day_key => $day) {
             foreach ($day as $key => $event) {
-                $button_class = ($courses[$event['vak']] > 2)?'btn-info':'btn-danger';
-
+                if ($courses[$event['vak']] > 2) {
+                    $button_class = 'btn-info';
+                } else {
+                   $button_class = 'btn-danger'; 
+                }
+                $absence_req = AbsenceRequest::where('uid', '=', $event['details']->UID)->first();
+                if ($absence_req !== null) {
+                    $button_class = 'btn-warning';
+                    if ($absence_req->signed_by !== null) $button_class = 'btn-success';
+                }
+                
                 $events[$day_key][$key]['button_class'] = $button_class;
                 $events[$day_key][$key]['button_disabled'] = ($button_class != 'btn-info');
             }
@@ -87,9 +99,24 @@ class ScheduleController extends Controller
         return redirect()->back();
     }
 
-    public function request($timestamp, $vak)
+    public function request($timestamp, $vak, $uid, Request $request)
     {
         // TODO: Implement request
-        abort(501, 'Feature not implemented');
+        // abort(501, 'Feature not implemented');
+
+        $this->authorize('absencerequest.add');
+        abort_unless($request->hasValidSignature(), 401);
+
+        $absence_req = new AbsenceRequest();
+
+        $absence_req->user_id = auth()->user()->id;
+        $absence_req->datetime = $timestamp;
+        $absence_req->vak = $vak;
+        $absence_req->uid = $uid;
+        $absence_req->school_year_id = SchoolYear::current();
+        
+        $absence_req->save();
+
+        return redirect()->back();
     }
 }

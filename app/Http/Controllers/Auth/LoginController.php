@@ -28,6 +28,9 @@ class LoginController extends Controller
             return back()->with('error', 'Ongeldige inloggegevens');
         }
 
+        $user = auth()->user();
+        
+
         return redirect()->intended('/');
     }
 }

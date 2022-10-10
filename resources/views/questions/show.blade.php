@@ -6,8 +6,18 @@
         <h1 class="mt-4">
             Vraag #{{ $question->id }}
             @can('questions.delete')
-                <a class="btn btn-danger" href="{{ route('questions.destroy', ['id' => $question->id]) }}">Verwijder</a>
+                <a class="btn btn-danger" href="{{ route('questions.delete', ['id' => $question->id]) }}">Verwijder</a>
             @endcan
+            @if (auth()->user()->can('questions.publish') && $question->answer)
+                <a class="btn @if ($question->published) btn-warning @else btn-success @endif"
+                    href="{{ route('questions.publish', ['id' => $question->id]) }}">
+                    @if ($question->published)
+                        Niet publiceren
+                    @else
+                        Publiceren
+                    @endif
+                </a>
+            @endif
         </h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
@@ -28,6 +38,10 @@
             <div class="card mb-4">
                 <div class="card-header">
                     Antwoord
+                    @can('answers.delete')
+                        <a class="btn btn-danger" href="{{ route('questions.delete_answer', ['id' => $question->id]) }}"><i
+                                class="fas fa-trash"></i></a>
+                    @endcan
                 </div>
                 <div class="card-body">
                     {{ $question->answer->content }}

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Answer;
 use App\Models\Question;
+use App\Models\SchoolYear;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -22,9 +23,9 @@ class QuestionController extends Controller
     public function index()
     {
         if (Gate::allows('questions.view')) {
-            $questions = Question::all();
+            $questions = Question::all()->where('school_year_id', '=', SchoolYear::current());
         } else if (Gate::allows('questions.viewown')) {
-            $questions = auth()->user()->questions->all();
+            $questions = auth()->user()->questions->where('school_year_id', '=', SchoolYear::current());
         } else {
             abort(403);
         }
@@ -62,6 +63,7 @@ class QuestionController extends Controller
 
         $question->title = $request->title;
         $question->content = $request->content;
+        $question->school_year_id = SchoolYear::current();
 
         $question->save();
 
@@ -105,27 +107,42 @@ class QuestionController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function publish($id)
     {
-        //
+        $this->authorize('questions.publish');
+
+        $question = Question::find($id);
+        $question->published = !$question->published;
+
+        $question->save();
+
+        return redirect()->back();
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function delete_answer($id)
     {
-        //
+        $this->authorize('answers.delete');
+
+        $question = Question::find($id);
+
+        if ($question->answer) {
+            $question->answer->delete();
+            $question->published = 0;
+            $question->save();
+        }
+
+        return redirect()->back();
+    }
+
+    public function delete($id)
+    {
+        $this->authorize('questions.delete');
+
+        $question = Question::find($id);
+
+        return view('questions.delete', [
+            'question' => $question
+        ]);
     }
 
     /**
@@ -136,6 +153,6 @@ class QuestionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        dd('destroy');
     }
 }
