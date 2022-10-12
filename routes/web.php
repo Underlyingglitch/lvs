@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AbsenceRequestsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BuddieController;
@@ -88,6 +89,14 @@ Route::controller(ProjectsController::class)->group(function () {
         });
     });
     Route::get('/project', 'own')->name('projects.own');
+});
+
+Route::controller(AbsenceRequestsController::class)->group(function () {
+    Route::prefix('absencerequests')->group(function () {
+        Route::name('absencerequests.')->group(function () {
+            Route::get('/', 'index')->name('index');
+        });
+    });
 });
 
 // Authentication routes

@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
-use App\Models\SchoolYear;
 use Illuminate\Http\Request;
 
-class ProjectsController extends Controller
+class AbsenceRequestsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,21 +14,6 @@ class ProjectsController extends Controller
     public function index()
     {
         //
-    }
-
-    public function own()
-    {
-        $this->authorize('projects.owns');
-
-        $projects = auth()->user()->projects->where('school_year_id', '=', SchoolYear::current());
-        if (count($projects) == 0) {
-            // TODO: redirect to setup screen
-            return 'none';
-        }
-
-        abort_unless(($projects->first()->user_id == auth()->user()->id), 403);
-
-        return $this->show($projects->first()->id);
     }
 
     /**
@@ -62,11 +45,7 @@ class ProjectsController extends Controller
      */
     public function show($id)
     {
-        // TODO: Implement authentication
-        $project = Project::find($id);
-        return view('projects.show', [
-            'project' => $project
-        ]);
+        //
     }
 
     /**

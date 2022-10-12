@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SomTodayiCalAccount;
 use Sabre\VObject\Reader as Calendar;
-use App\Jobs\PullScheduleData;
 use App\Models\AbsenceRequest;
 use App\Models\SchoolYear;
 
