@@ -8,7 +8,7 @@
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
             <li class="breadcrumb-item"><a href="{{ route('students.index') }}">Leerlingen</a></li>
             <li class="breadcrumb-item"><a
-                    href="{{ route('students.show', ['id' => $student->id]) }}">{{ $student->user->name }}</a></li>
+                    href="{{ route('students.show', ['id' => $student->id]) }}">{{ $student->name }}</a></li>
             <li class="breadcrumb-item active">Bewerken</li>
         </ol>
         <div class="card mb-4">
@@ -23,17 +23,17 @@
                         <div class="col-md-4">
                             <label for="name">Naam</label>
                             <input class="form-control" type="text" name="name" id="name"
-                                value="{{ $student->user->name }}">
+                                value="{{ $student->name }}">
                         </div>
                         <div class="col-md-4">
-                            <label for="leerlingnummer">Leerlingnummer</label>
-                            <input class="form-control" type="text" name="leerlingnummer" id="leerlingnummer"
-                                value="{{ $student->leerlingnummer }}">
+                            <label for="studentid">Leerlingnummer</label>
+                            <input class="form-control" type="text" name="studentid" id="studentid"
+                                value="{{ $student->studentid }}">
                         </div>
                         <div class="col-md-4">
-                            <label for="klas">Klas</label>
-                            <input class="form-control" type="text" name="klas" id="klas"
-                                value="{{ $student->klas }}">
+                            <label for="group">Klas</label>
+                            <input class="form-control" type="text" name="group" id="group"
+                                value="{{ $student->group }}">
                         </div>
                     </div>
                     <br>
@@ -41,7 +41,7 @@
                         <div class="col-md-5">
                             <label for="email">Email adres</label>
                             <input class="form-control" type="text" name="email" id="email"
-                                value="{{ $student->user->email }}">
+                                value="{{ $student->email }}">
                         </div>
                         <div class="col-md-3">
                             <label for="buddie">Buddie</label>
@@ -50,7 +50,7 @@
                                 @foreach ($buddies as $buddie)
                                     <option value="{{ $buddie->id }}"
                                         @if ($student->buddie == null) @elseif($buddie->id == $student->buddie->id) selected @endif>
-                                        {{ $buddie->user->name }}</option>
+                                        {{ $buddie->name }}</option>
                                 @endforeach
                             </select>
                         </div>

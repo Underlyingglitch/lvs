@@ -62,14 +62,11 @@ class User extends Authenticatable implements Auditable
         return '-';
     }
 
-    public function student()
-    {
-        return $this->hasOne(Student::class);
+    public function students() {
+        return $this->hasMany(User::class, 'buddie_id', 'id');
     }
-
-    public function buddie()
-    {
-        return $this->hasOne(Buddie::class);
+    public function buddie() {
+        return $this->belongsTo(User::class);
     }
 
     public function questions()
@@ -100,5 +97,10 @@ class User extends Authenticatable implements Auditable
     public function absence_requests()
     {
         return $this->hasMany(AbsenceRequest::class);
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
     }
 }

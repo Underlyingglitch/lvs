@@ -58,21 +58,6 @@
                     @endcan
                     @if (auth()->user()->can('students.viewown') &&
                         auth()->user()->cannot('students.view'))
-                        {{-- <a class="nav-link @if ($page_id != 'students') collapsed @endif" href="#"
-                            data-bs-toggle="collapse" data-bs-target="#collapseStudents"
-                            aria-expanded="@if ($page_id == 'students') true @else false @endif"
-                            aria-controls="collapseStudents">
-                            <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                            Leerlingen
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse @if ($page_id != 'students') open @endif" id="collapseStudents"
-                            aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="layout-static.html">Static Navigation</a>
-                                <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
-                            </nav>
-                        </div> --}}
                         <a class="nav-link @if ($page_id != 'students') collapsed @endif" href="#"
                             data-bs-toggle="collapse" data-bs-target="#collapseStudents"
                             aria-expanded="@if ($page_id == 'students') true @else false @endif"
@@ -84,14 +69,21 @@
                         <div class="collapse @if ($page_id == 'students') show @endif" id="collapseStudents"
                             aria-labelledby="headingOne">
                             <nav class="sb-sidenav-menu-nested nav">
-                                @php($students = auth()->user()->buddie->students)
+                                @php($students = auth()->user()->students)
                                 @foreach ($students as $student)
                                     <a class="nav-link"
-                                        href="{{ route('students.show', ['id' => $student->id]) }}">{{ $student->user->name }}</a>
+                                        href="{{ route('students.show', ['id' => $student->id]) }}">{{ $student->name }}</a>
                                 @endforeach
                             </nav>
                         </div>
                     @endif
+                    @can('absencerequest.view')
+                        <a class="nav-link @if ($page_id == 'absencerequests') active @endif"
+                            href="{{ route('absencerequests.index') }}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-user-clock"></i></div>
+                            Verzuimverzoeken
+                        </a>
+                    @endcan
                     @canany(['students.view', 'buddies.view', 'users.view'])
                         <div class="sb-sidenav-menu-heading">Beheer</div>
                     @endcan
@@ -103,7 +95,8 @@
                         </a>
                     @endcan
                     @can('buddies.view')
-                        <a class="nav-link @if ($page_id == 'buddies') active @endif" href="{{ route('buddies.index') }}">
+                        <a class="nav-link @if ($page_id == 'buddies') active @endif"
+                            href="{{ route('buddies.index') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                             Buddy's
                         </a>

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Buddie;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class BuddieController extends Controller
@@ -16,28 +16,32 @@ class BuddieController extends Controller
     {
         $this->authorize('buddies.view');
 
-        $buddies = Buddie::all();
+        $buddies = User::role('buddie')->get();
 
         return view('buddies.index', [
             'buddies' => $buddies
         ]);
     }
 
-    public function show(Buddie $id)
+    public function show($id)
     {
         $this->authorize('buddies.view');
 
+        $buddie = User::find($id);
+
         return view('buddies.show', [
-            'buddie' => $id
+            'buddie' => $buddie
         ]);
     }
 
-    public function edit(Buddie $id)
+    public function edit($id)
     {
         $this->authorize('buddies.edit');
 
+        $buddie = User::find($id);
+
         return view('buddies.edit', [
-            'buddie' => $id
+            'buddie' => $buddie
         ]);
     }
 
@@ -47,14 +51,13 @@ class BuddieController extends Controller
 
         abort_unless($request->hasValidSignature(), 401);
 
-        $buddie = Buddie::find($id);
+        $buddie = User::find($id);
 
-        $buddie->klas = $request->klas;
-        $buddie->leerlingnummer = $request->leerlingnummer;
-        $buddie->user->email = $request->email;
-        $buddie->user->name = $request->name;
+        $buddie->group = $request->group;
+        $buddie->studentid = $request->studentid;
+        $buddie->email = $request->email;
+        $buddie->name = $request->name;
         
-        $buddie->user->save();
         $buddie->save();
 
         return redirect()->route('buddies.show', ['id' => $id]);
@@ -64,7 +67,7 @@ class BuddieController extends Controller
     {
         $this->authorize('buddies.delete');
 
-        $buddie = Buddie::find($id);
+        $buddie = User::find($id);
 
         return view('buddies.delete', [
             'buddie' => $buddie
@@ -75,7 +78,7 @@ class BuddieController extends Controller
     {
         $this->authorize('buddies.delete');
 
-        $buddie = Buddie::find($id);
+        $buddie = User::find($id);
 
         $buddie->delete();
 

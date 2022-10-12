@@ -8,13 +8,13 @@
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
             <li class="breadcrumb-item"><a href="{{ route('students.index') }}">Leerlingen</a></li>
             <li class="breadcrumb-item"><a
-                    href="{{ route('students.show', ['id' => $student->id]) }}">{{ $student->user->name }}</a>
+                    href="{{ route('students.show', ['id' => $student->id]) }}">{{ $student->name }}</a>
             </li>
             <li class="breadcrumb-item active">Verwijderen</li>
         </ol>
 
         <div>
-            Weet u zeker dat u <b>{{ $student->user->name }}</b> wilt verwijderen? Alle data verbonden met dit
+            Weet u zeker dat u <b>{{ $student->name }}</b> wilt verwijderen? Alle data verbonden met dit
             gebruikersaccount zal verloren
             gaan en de gebruiker zal niet meer kunnen inloggen. Deze actie kan niet ongedaan gemaakt worden!
         </div>

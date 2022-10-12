@@ -7,8 +7,7 @@
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
             <li class="breadcrumb-item"><a href="{{ route('buddies.index') }}">Buddy's</a></li>
-            <li class="breadcrumb-item"><a
-                    href="{{ route('buddies.show', ['id' => $buddie->id]) }}">{{ $buddie->user->name }}</a>
+            <li class="breadcrumb-item"><a href="{{ route('buddies.show', ['id' => $buddie->id]) }}">{{ $buddie->name }}</a>
             </li>
             <li class="breadcrumb-item active">Bewerken</li>
         </ol>
@@ -24,17 +23,17 @@
                         <div class="col-md-4">
                             <label for="name">Naam</label>
                             <input class="form-control" name="name" type="text" id="name"
-                                value="{{ $buddie->user->name }}">
+                                value="{{ $buddie->name }}">
                         </div>
                         <div class="col-md-4">
-                            <label for="leerlingnummer">Leerlingnummer</label>
-                            <input class="form-control" name="leerlingnummer" type="text" id="leerlingnummer"
-                                value="{{ $buddie->leerlingnummer }}">
+                            <label for="studentid">Leerlingnummer</label>
+                            <input class="form-control" name="studentid" type="text" id="studentid"
+                                value="{{ $buddie->studentid }}">
                         </div>
                         <div class="col-md-4">
-                            <label for="klas">Klas</label>
-                            <input class="form-control" name="klas" type="text" id="klas"
-                                value="{{ $buddie->klas }}">
+                            <label for="group">Klas</label>
+                            <input class="form-control" name="group" type="text" id="group"
+                                value="{{ $buddie->group }}">
                         </div>
                     </div>
                     <br>
@@ -42,7 +41,7 @@
                         <div class="col-md-6">
                             <label for="email">Email adres</label>
                             <input class="form-control" name="email" type="text" id="email"
-                                value="{{ $buddie->user->email }}">
+                                value="{{ $buddie->email }}">
                         </div>
                         <div class="col-md-3">
                             <label for="submit">&nbsp;</label>
@@ -72,15 +71,13 @@
                                 <th>Leerlingnummer</th>
                                 <th>Klas</th>
                             </tr>
-                            @foreach ($buddie->students as $leerling)
+                            @foreach ($buddie->students as $student)
                                 <tr>
                                     <td>
-                                        <a class="btn-link" href="#">
-                                            {{ $leerling->user->name }} <i class="fas fa-arrow-up-right-from-square"></i>
-                                        </a>
+                                        {{ $student->name }}
                                     </td>
-                                    <td>{{ $leerling->leerlingnummer }}</td>
-                                    <td>{{ $leerling->klas }}</td>
+                                    <td>{{ $student->studentid }}</td>
+                                    <td>{{ $student->group }}</td>
                                 </tr>
                             @endforeach
                         </table>

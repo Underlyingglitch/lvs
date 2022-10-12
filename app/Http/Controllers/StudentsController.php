@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Cache;
 use Carbon\Carbon;
-use App\Models\Buddie;
-use App\Models\Student;
+// use App\Models\Buddie;
+// use App\Models\Student;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -19,14 +20,14 @@ class studentsController extends Controller
     public function index()
     {
         if (Gate::allows('students.view')) {
-            $students = Student::all();
+            $students = User::role('student')->get();
         } else if (Gate::allows('students.viewown')) {
-            $students = auth()->user()->buddie->students;
+            $students = auth()->user()->students;
         } else {
             abort(403);
         }
 
-        $students = Student::all();
+        // $students = Student::all();
 
         return view('students.index', [
             'students' => $students
@@ -38,9 +39,9 @@ class studentsController extends Controller
         // $this->authorize('students.view');
         //If not a teacher of a buddie
         abort_if((Gate::denies('students.view') && Gate::denies('students.viewown')), 403);
-        
-        $student = Student::find($id);
-        abort_if($student->buddie->user->id != auth()->user()->id, 403);
+
+        $student = User::find($id);
+        abort_if(($student->buddie->id != auth()->user()->id && Gate::denies('students.view')), 403);
         
         return view('students.show', [
             'student' => $student
@@ -51,11 +52,11 @@ class studentsController extends Controller
     {
         $this->authorize('students.edit');
 
-        $student = Student::find($id);
+        $student = User::find($id);
 
         return view('students.edit', [
             'student' => $student,
-            'buddies' => Buddie::all()
+            'buddies' => User::role('buddie')->get()
         ]);
     }
 
@@ -65,12 +66,12 @@ class studentsController extends Controller
 
         abort_unless($request->hasValidSignature(), 401);
 
-        $student = Student::find($id);
+        $student = User::find($id);
 
-        $student->klas = $request->klas;
-        $student->leerlingnummer = $request->leerlingnummer;
-        $student->user->email = $request->email;
-        $student->user->name = $request->name;
+        $student->group = $request->group;
+        $student->studentid = $request->studentid;
+        $student->email = $request->email;
+        $student->name = $request->name;
 
         if ($request->buddie != 'none') {
             $student->buddie_id = $request->buddie;
@@ -78,7 +79,6 @@ class studentsController extends Controller
             $student->buddie_id = null;
         }
         
-        $student->user->save();
         $student->save();
 
         return redirect()->route('students.show', ['id' => $id]);
@@ -88,7 +88,7 @@ class studentsController extends Controller
     {
         $this->authorize('students.delete');
 
-        $student = Student::find($id);
+        $student = User::find($id);
 
         return view('students.delete', [
             'Student' => $student
@@ -99,7 +99,7 @@ class studentsController extends Controller
     {
         $this->authorize('students.delete');
 
-        $buddie = Student::find($id);
+        $buddie = User::find($id);
 
         $buddie->delete();
 

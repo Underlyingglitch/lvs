@@ -40,25 +40,25 @@
                     <tbody>
                         @foreach ($students as $student)
                             <tr>
-                                <td>{{ $student->leerlingnummer }}</td>
-                                <td>{{ $student->user->name }}</td>
-                                <td>{{ $student->user->email }}</td>
-                                <td>{{ $student->klas }}</td>
+                                <td>{{ $student->studentid }}</td>
+                                <td>{{ $student->name }}</td>
+                                <td>{{ $student->email }}</td>
+                                <td>{{ $student->group }}</td>
                                 <td>
                                     @if ($student->buddie != null)
-                                        {{ $student->buddie->user->name }}
+                                        {{ $student->buddie->name }}
                                     @else
                                         -
                                     @endif
                                 </td>
                                 <td>
-                                    @if (strtotime($student->user->last_seen) > strtotime('-1 minutes'))
+                                    @if (strtotime($student->last_seen) > strtotime('-1 minutes'))
                                         <span class="text-success">Online</span>
-                                    @elseif($student->user->last_seen == null)
+                                    @elseif($student->last_seen == null)
                                         <span class="text-secondary">Nooit</span>
                                     @else
                                         <span
-                                            class="text-secondary">{{ Carbon\Carbon::parse($student->user->last_seen)->diffForHumans() }}</span>
+                                            class="text-secondary">{{ Carbon\Carbon::parse($student->last_seen)->diffForHumans() }}</span>
                                     @endif
                                 </td>
                                 <td>

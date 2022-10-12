@@ -15,7 +15,7 @@
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
             <li class="breadcrumb-item"><a href="{{ route('students.index') }}">Leerlingen</a></li>
-            <li class="breadcrumb-item active">{{ $student->user->name }}</li>
+            <li class="breadcrumb-item active">{{ $student->name }}</li>
         </ol>
         <div class="card mb-4">
             <div class="card-header">
@@ -27,39 +27,39 @@
                     <div class="row">
                         <div class="col-md-4">
                             <label for="name">Naam</label>
-                            <input class="form-control" type="text" id="name" value="{{ $student->user->name }}"
-                                readonly>
+                            <input class="form-control" type="text" id="name" value="{{ $student->name }}" readonly>
                         </div>
                         <div class="col-md-4">
                             <label for="leerlingnummer">Leerlingnummer</label>
-                            <input class="form-control" type="text" id="leerlingnummer"
-                                value="{{ $student->leerlingnummer }}" readonly>
+                            <input class="form-control" type="text" id="leerlingnummer" value="{{ $student->studentid }}"
+                                readonly>
                         </div>
                         <div class="col-md-4">
                             <label for="klas">Klas</label>
-                            <input class="form-control" type="text" id="klas" value="{{ $student->klas }}" readonly>
+                            <input class="form-control" type="text" id="klas" value="{{ $student->group }}"
+                                readonly>
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-md-5">
                             <label for="email">Email adres</label>
-                            <input class="form-control" type="text" id="email" value="{{ $student->user->email }}"
+                            <input class="form-control" type="text" id="email" value="{{ $student->email }}"
                                 readonly>
                         </div>
                         <div class="col-md-3">
                             <label for="buddie">Buddie</label>
                             <input class="form-control" type="text" id="buddie"
-                                value="@if ($student->buddie != null) {{ $student->buddie->user->name }} @else -- @endif"
+                                value="@if ($student->buddie != null) {{ $student->buddie->name }} @else -- @endif"
                                 readonly>
                         </div>
                         <div class="col-md-3">
                             <label>Laatst online</label><br>
-                            @if (strtotime($student->user->last_seen) > strtotime('-1 minutes'))
+                            @if (strtotime($student->last_seen) > strtotime('-1 minutes'))
                                 <span class="text-success">Nu</span>
                             @else
                                 <span
-                                    class="text-secondary">{{ Carbon\Carbon::parse($student->user->last_seen)->diffForHumans() }}</span>
+                                    class="text-secondary">{{ Carbon\Carbon::parse($student->last_seen)->diffForHumans() }}</span>
                             @endif
                         </div>
                     </div>

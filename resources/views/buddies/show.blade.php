@@ -15,7 +15,7 @@
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
             <li class="breadcrumb-item"><a href="{{ route('buddies.index') }}">Buddy's</a></li>
-            <li class="breadcrumb-item active">{{ $buddie->user->name }}</li>
+            <li class="breadcrumb-item active">{{ $buddie->name }}</li>
         </ol>
         <div class="card mb-4">
             <div class="card-header">
@@ -27,25 +27,23 @@
                     <div class="row">
                         <div class="col-md-4">
                             <label for="name">Naam</label>
-                            <input class="form-control" type="text" id="name" value="{{ $buddie->user->name }}"
-                                readonly>
+                            <input class="form-control" type="text" id="name" value="{{ $buddie->name }}" readonly>
                         </div>
                         <div class="col-md-4">
                             <label for="leerlingnummer">Leerlingnummer</label>
-                            <input class="form-control" type="text" id="leerlingnummer"
-                                value="{{ $buddie->leerlingnummer }}" readonly>
+                            <input class="form-control" type="text" id="leerlingnummer" value="{{ $buddie->studentid }}"
+                                readonly>
                         </div>
                         <div class="col-md-4">
-                            <label for="klas">Klas</label>
-                            <input class="form-control" type="text" id="klas" value="{{ $buddie->klas }}" readonly>
+                            <label for="group">Klas</label>
+                            <input class="form-control" type="text" id="group" value="{{ $buddie->group }}" readonly>
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="col-md-6">
                             <label for="email">Email adres</label>
-                            <input class="form-control" type="text" id="email" value="{{ $buddie->user->email }}"
-                                readonly>
+                            <input class="form-control" type="text" id="email" value="{{ $buddie->email }}" readonly>
                         </div>
                     </div>
                 </form>
@@ -66,15 +64,15 @@
                                 <th>Leerlingnummer</th>
                                 <th>Klas</th>
                             </tr>
-                            @foreach ($buddie->students as $leerling)
+                            @foreach ($buddie->students as $student)
                                 <tr>
                                     <td>
-                                        <a class="btn-link" href="#">
-                                            {{ $leerling->user->name }} <i class="fas fa-arrow-up-right-from-square"></i>
+                                        <a class="btn-link" href="{{ route('students.show', ['id' => $student->id]) }}">
+                                            {{ $student->name }} <i class="fas fa-arrow-up-right-from-square"></i>
                                         </a>
                                     </td>
-                                    <td>{{ $leerling->leerlingnummer }}</td>
-                                    <td>{{ $leerling->klas }}</td>
+                                    <td>{{ $student->studentid }}</td>
+                                    <td>{{ $student->group }}</td>
                                 </tr>
                             @endforeach
                         </table>

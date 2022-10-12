@@ -17,11 +17,16 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->unsignedBigInteger('buddie_id')->nullable();
+            $table->integer('studentid')->nullable();
+            $table->string('group')->nullable();
             $table->string('password');
-            $table->rememberToken();
             $table->timestamp('last_seen')->nullable();
+            $table->rememberToken();
+            $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
+
+            $table->foreign('buddie_id')->references('id')->on('users')->nullOnDelete();
         });
     }
 

@@ -26,6 +26,19 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('Test')
         ]);
 
+        \App\Models\User::factory()->create([
+            'name' => 'Test Buddy',
+            'email' => 'test@test.com',
+            'password' => Hash::make('Test')
+        ]);
+
+        \App\Models\User::factory()->create([
+            'name' => 'Test Leerling',
+            'email' => 'test2@test.com',
+            'password' => Hash::make('Test'),
+            'buddie_id' => 2
+        ]);
+
         \App\Models\SomTodayiCalAccount::create([
             'user_id' => 1,
             'ical_url' => "https://elo.somtoday.nl/services/webdav/calendarfeed/99f5d02e-c928-47af-ba6a-1f72e364d753/121c780b-038f-49d6-9204-9c10c8d08eeb"
@@ -84,7 +97,7 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'projects.delete']);
 
         // create roles and assign created permissions
-        Role::create(['name' => 'docent'])
+        Role::create(['name' => 'teacher'])
             ->givePermissionTo([
                 'students.view',
                 'students.edit',
@@ -113,7 +126,7 @@ class DatabaseSeeder extends Seeder
                 'projects.edit'
             ]);
 
-        Role::create(['name' => 'leerling'])
+        Role::create(['name' => 'student'])
             ->givePermissionTo([
                 'questions.viewown',
                 'questions.add',
@@ -126,6 +139,12 @@ class DatabaseSeeder extends Seeder
             ->givePermissionTo(Permission::all());
 
         $user = User::find(1);
-        $user->assignRole('leerling');
+        $user->assignRole('teacher');
+
+        $user = User::find(2);
+        $user->assignRole('buddie');
+
+        $user = User::find(3);
+        $user->assignRole('student');
     }
 }
