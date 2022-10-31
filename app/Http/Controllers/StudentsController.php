@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Cache;
-use Carbon\Carbon;
-// use App\Models\Buddie;
-// use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
-class studentsController extends Controller
+class StudentsController extends Controller
 {
     public function __construct()
     {
