@@ -15,4 +15,9 @@ class Project extends Model implements Auditable
     {
         return $this->belongsTo(User::class);
     }
+
+    public function schoolyear()
+    {
+        return $this->belongsTo(Schoolyear::class, 'school_year_id');
+    }
 }

@@ -3,7 +3,13 @@
 
 @section('content')
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Leerlingen</h1>
+        <h1 class="mt-4">
+            Leerlingen
+            <a class="btn btn-success" href="{{ route('users.create', ['type' => 'student']) }}">
+                <i class="fas fa-plus"></i>
+                Nieuw
+            </a>
+        </h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
             <li class="breadcrumb-item active">Leerlingen</li>
@@ -64,7 +70,7 @@
                                 <td>
                                     <a class="btn btn-sm btn-info"
                                         href="{{ route('students.show', ['id' => $student->id]) }}"><i
-                                            class="fas fa-info"></i></a>
+                                            class="fas fa-info-circle"></i></a>
                                     @can('students.edit')
                                         <a class="btn btn-sm btn-warning"
                                             href="{{ route('students.edit', ['id' => $student->id]) }}"><i

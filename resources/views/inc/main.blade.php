@@ -23,6 +23,11 @@
         @yield('sidebar')
         <div id="layoutSidenav_content">
             <main>
+                @if (\Session::has('success'))
+                    <div class="alert alert-success" role="alert">
+                        {{ \Session::get('success') }}
+                    </div>
+                @endif
                 @yield('content')
             </main>
             @yield('footer')

@@ -49,6 +49,9 @@ $(function () {
     }
   });
   $('#dataTable').show();
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
 });
 
 /***/ }),

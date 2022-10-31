@@ -1,6 +1,8 @@
 @extends('inc.app')
 @php($page_id = 'students')
 
+@section('title', 'Verwijder ' . $student->name)
+
 @section('content')
     <div class="container-fluid px-4">
         <h1 class="mt-4">Leerling verwijderen</h1>

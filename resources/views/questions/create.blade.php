@@ -1,6 +1,8 @@
 @extends('inc.app')
 @php($page_id = 'questions')
 
+@section('title', 'Nieuwe vraag')
+
 @section('content')
     <div class="container-fluid px-4">
         <h1 class="mt-4">

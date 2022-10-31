@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -35,7 +37,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $this->authorize('users.create');
+
+        return view('users.create', [
+            'buddies' => User::role('buddie')->get()
+        ]);
     }
 
     /**
@@ -46,7 +52,31 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('users.create');
+
+        $user = new User();
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->studentid = $request->studentid;
+        $user->group = $request->group;
+
+        if ($request->type == "student") {
+            $user->buddie_id = ($request->buddie == '--')?null:$request->buddie;
+        }
+
+        $password = Str::random(20);
+        $user->password = Hash::make($password);
+
+        $user->save();
+
+        $user->assignRole($request->type);
+
+        return view('users.create', [
+            'buddies' => User::role('buddie')->get(),
+            'user' => $user,
+            'password' => $password
+        ]);
     }
 
     /**

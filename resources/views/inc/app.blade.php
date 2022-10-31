@@ -1,4 +1,7 @@
 @extends('inc.main')
+@section('page_title')
+    @yield('title') - Verbreding Logboek
+@endsection
 
 @section('nav')
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -12,6 +15,9 @@
         </form>
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('profile.index') }}"><i class="fas fa-user"></i></a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i></a>
             </li>
@@ -48,6 +54,11 @@
                         {{-- @can('questions.view')
                             <span class="badge rounded-pill text-bg-primary">{{ Question::withCount('answer') }}</span>
                         @endcan --}}
+                    </a>
+                    <a class="nav-link @if ($page_id == 'conversations') active @endif"
+                        href="{{ route('conversations.index') }}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-comments"></i></div>
+                        Gesprekken
                     </a>
                     @can('schedule.view')
                         <a class="nav-link @if ($page_id == 'schedule') active @endif"
@@ -102,7 +113,8 @@
                         </a>
                     @endcan
                     @can('users.view')
-                        <a class="nav-link @if ($page_id == 'users') active @endif" href="{{ route('users.index') }}">
+                        <a class="nav-link @if ($page_id == 'users') active @endif"
+                            href="{{ route('users.index') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                             Gebruikers
                         </a>

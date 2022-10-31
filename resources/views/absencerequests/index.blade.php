@@ -62,7 +62,7 @@
                                 <td>
                                     <a class="btn btn-sm btn-info"
                                         href="{{ route('students.show', ['id' => $student->id]) }}"><i
-                                            class="fas fa-info"></i></a>
+                                            class="fas fa-info-circle"></i></a>
                                     @can('students.edit')
                                         <a class="btn btn-sm btn-warning"
                                             href="{{ route('students.edit', ['id' => $student->id]) }}"><i

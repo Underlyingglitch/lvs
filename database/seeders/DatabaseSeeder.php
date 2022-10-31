@@ -20,19 +20,19 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        \App\Models\User::factory()->create([
+        User::factory()->create([
             'name' => 'Rick Okkersen',
             'email' => 'rickokkersen@gmail.com',
             'password' => Hash::make('Test')
         ]);
 
-        \App\Models\User::factory()->create([
+        User::factory()->create([
             'name' => 'Test Buddy',
             'email' => 'test@test.com',
             'password' => Hash::make('Test')
         ]);
 
-        \App\Models\User::factory()->create([
+        User::factory()->create([
             'name' => 'Test Leerling',
             'email' => 'test2@test.com',
             'password' => Hash::make('Test'),
@@ -72,6 +72,7 @@ class DatabaseSeeder extends Seeder
 
         Permission::create(['name' => 'users.*']);
         Permission::create(['name' => 'users.view']);
+        Permission::create(['name' => 'users.create']);
         Permission::create(['name' => 'users.edit']);
         Permission::create(['name' => 'users.viewown']);
         Permission::create(['name' => 'users.delete']);
@@ -100,6 +101,7 @@ class DatabaseSeeder extends Seeder
         Role::create(['name' => 'teacher'])
             ->givePermissionTo([
                 'students.view',
+                'users.create',
                 'students.edit',
                 'buddies.view',
                 'buddies.edit',

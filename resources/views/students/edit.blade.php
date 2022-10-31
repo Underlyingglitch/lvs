@@ -1,6 +1,8 @@
 @extends('inc.app')
 @php($page_id = 'students')
 
+@section('title', 'Bewerk ' . $student->name)
+
 @section('content')
     <div class="container-fluid px-4">
         <h1 class="mt-4">Leerling bewerken</h1>
@@ -44,7 +46,7 @@
                                 value="{{ $student->email }}">
                         </div>
                         <div class="col-md-3">
-                            <label for="buddie">Buddie</label>
+                            <label for="buddie">Buddy</label>
                             <select class="form-control" name="buddie" id="buddie">
                                 <option value="none">--</option>
                                 @foreach ($buddies as $buddie)

@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Question;
+use App\Models\SchoolYear;
 use App\Models\AbsenceRequest;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\SomTodayiCalAccount;
@@ -99,8 +100,18 @@ class User extends Authenticatable implements Auditable
         return $this->hasMany(AbsenceRequest::class);
     }
 
-    public function projects()
+    public function project()
     {
-        return $this->hasMany(Project::class);
+        return $this->hasOne(Project::class)->where('school_year_id',SchoolYear::current());
+    }
+
+    public function organized_conversations()
+    {
+        return $this->hasMany(Conversation::class, 'organizer_id', 'id');
+    }
+
+    public function invited_conversations()
+    {
+        return $this->belongsToMany(Conversation::class);
     }
 }

@@ -1,6 +1,8 @@
 @extends('inc.app')
 @php($page_id = 'students')
 
+@section('title', $student->name)
+
 @section('content')
     <div class="container-fluid px-4">
         <h1 class="mt-4">
@@ -48,7 +50,7 @@
                                 readonly>
                         </div>
                         <div class="col-md-3">
-                            <label for="buddie">Buddie</label>
+                            <label for="buddie">Buddy</label>
                             <input class="form-control" type="text" id="buddie"
                                 value="@if ($student->buddie != null) {{ $student->buddie->name }} @else -- @endif"
                                 readonly>

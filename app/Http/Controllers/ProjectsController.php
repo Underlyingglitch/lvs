@@ -15,22 +15,24 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        //
+        // TODO: Implement authentication
+        // TODO: Project overview
     }
 
     public function own()
     {
         $this->authorize('projects.owns');
 
-        $projects = auth()->user()->projects->where('school_year_id', '=', SchoolYear::current());
-        if (count($projects) == 0) {
+        $project = auth()->user()->project;
+
+        if ($project == null) {
             // TODO: redirect to setup screen
-            return 'none';
+            return $this->create();
         }
 
-        abort_unless(($projects->first()->user_id == auth()->user()->id), 403);
+        abort_unless(($project->user_id == auth()->user()->id), 403);
 
-        return $this->show($projects->first()->id);
+        return $this->show($project->id);
     }
 
     /**
@@ -40,7 +42,8 @@ class ProjectsController extends Controller
      */
     public function create()
     {
-        //
+        // TODO: Implement authentication
+        return view('projects.setup');
     }
 
     /**
@@ -51,7 +54,17 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // TODO: Implement authentication
+        $project = new Project();
+
+        $project->title = $request->title;
+        $project->description = $request->description;
+        $project->user_id = auth()->user()->id;
+        $project->school_year_id = SchoolYear::current();
+
+        $project->save();
+
+        return redirect()->route('projects.own');
     }
 
     /**

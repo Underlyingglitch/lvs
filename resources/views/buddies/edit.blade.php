@@ -1,6 +1,8 @@
 @extends('inc.app')
 @php($page_id = 'buddies')
 
+@section('title', 'Bewerk ' . $buddie->name)
+
 @section('content')
     <div class="container-fluid px-4">
         <h1 class="mt-4">Buddy bewerken</h1>

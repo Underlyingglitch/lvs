@@ -1,6 +1,8 @@
 @extends('inc.app')
 @php($page_id = 'questions')
 
+@section('title', 'Vragen')
+
 @section('content')
     <div class="container-fluid px-4">
         <h1 class="mt-4">
@@ -63,7 +65,7 @@
                                 <td>
                                     <a class="btn btn-sm btn-info"
                                         href="{{ route('questions.show', ['id' => $question->id]) }}"><i
-                                            class="fas fa-info"></i></a>
+                                            class="fas fa-info-circle"></i></a>
                                     @can('questions.delete')
                                         <a class="btn btn-sm btn-danger"
                                             href="{{ route('questions.delete', ['id' => $question->id]) }}"><i

@@ -1,6 +1,8 @@
 @extends('inc.app')
 @php($page_id = 'schedule')
 
+@section('title', 'Rooster')
+
 @section('content')
     {{-- @foreach ($events as $event)
         {{ $event->SUMMARY }} | {{ $event->DTSTART }}<br>

@@ -1,8 +1,17 @@
 @extends('inc.app')
 @php($page_id = 'schedule')
 
+@section('title', 'Rooster instellen')
+
 @section('content')
     <div class="container-fluid px-4">
+        <div id="overlay"
+            style="position: fixed;display: block;width: 100%;height: 100%;top: 0;left: 0;right: 0;bottom: 0;background: linear-gradient(45deg, #000000 25%, #ff0000 25%, #ff0000 50%, #000000 50%, #000000 75%, #ff0000 75%, #ff0000 100%);background-size: 56.57px 56.57px;opacity:80%;z-index: 2;">
+            <div
+                style="position: absolute;top: 50%;left: 50%;font-size: 50px;color: white;transform: translate(-50%,-50%);-ms-transform: translate(-50%,-50%);">
+                Functionaliteit uitgeschakeld
+            </div>
+        </div>
         <h1 class="mt-4">Rooster instellen</h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>

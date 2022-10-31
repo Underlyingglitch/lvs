@@ -84,8 +84,12 @@ class ScheduleController extends Controller
         
     }
 
+    //!SECTION SAVE ROOSTER ACCOUNT
     public function post(Request $request)
     {
+        //NOTE - Disabled functionality
+        return redirect()->back();
+
         $account = new SomTodayiCalAccount();
 
         $account->user_id = auth()->user()->id;
