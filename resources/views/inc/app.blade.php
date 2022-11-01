@@ -4,7 +4,8 @@
 @endsection
 
 @section('nav')
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark"
+        @if (env('APP_DEBUG')) style="background-color: red !important" @endif>
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" href="{{ route('dashboard') }}">LVS</a>
         <!-- Sidebar Toggle-->
@@ -34,7 +35,8 @@
 
 @section('sidebar')
     <div id="layoutSidenav_nav">
-        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion"
+            @if (env('APP_DEBUG')) style="background-color: red !important" @endif>
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <a class="nav-link @if ($page_id == 'dashboard') active @endif" href="{{ route('dashboard') }}">
