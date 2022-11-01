@@ -61,8 +61,8 @@ class UserController extends Controller
         $user->studentid = $request->studentid;
         $user->group = $request->group;
 
-        if ($request->type == "student") {
-            $user->buddie_id = ($request->buddie == '--')?null:$request->buddie;
+        if ($request->type == "student" && $request->buddie != '--') {
+            $user->buddie()->associate(User::find($request->buddie));
         }
 
         $password = Str::random(20);
