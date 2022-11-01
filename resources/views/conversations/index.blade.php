@@ -28,6 +28,7 @@
                             <th>Datum</th>
                             <th>Organisator</th>
                             <th>Uitgenodigd</th>
+                            <th>Locatie</th>
                             <th>Voorbereiding</th>
                             <th>Afgerond?</th>
                             <th>Acties</th>
@@ -38,6 +39,7 @@
                             <th>Datum</th>
                             <th>Organisator</th>
                             <th>Uitgenodigd</th>
+                            <th>Locatie</th>
                             <th>Voorbereiding</th>
                             <th>Afgerond?</th>
                             <th>Acties</th>
@@ -49,6 +51,7 @@
                                 <td>{{ \Carbon\Carbon::parse($conversation->conversation_date)->format('d-m-Y H:i') }}</td>
                                 <td>{{ $conversation->organizer->name }}</td>
                                 <td>{{ $conversation->invitees->pluck('name')->implode(', ') }}</td>
+                                <td>{{ $conversation->location }}</td>
                                 @if ($conversation->my_preparation)
                                     <td style="text-align: center; color:green">JA</td>
                                 @else

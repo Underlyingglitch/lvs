@@ -59,6 +59,7 @@ class ConversationsController extends Controller
         $conversation = new Conversation();
         $conversation->conversation_date = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $request->date.' '.$request->time);
         $conversation->organizer_id = auth()->user()->id;
+        $conversation->location = $request->location;
         $conversation->save();
 
         $invitees = User::find($request->invitees);

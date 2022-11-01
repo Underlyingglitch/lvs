@@ -56,6 +56,9 @@
                         Gespreksdetails
                     </div>
                     <div class="card-body">
+                        <label for="location">Locatie</label>
+                        <input class="form-control" type="text" value="{{ $conversation->location }}" readonly>
+                        <hr>
                         <label for="participants">Deelnemers</label>
                         <ul id="participants">
                             <li>{{ $conversation->organizer->name }} <span style="color: orange" data-toggle="tooltip"

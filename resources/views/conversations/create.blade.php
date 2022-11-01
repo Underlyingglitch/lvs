@@ -20,20 +20,29 @@
                 <form action="{{ route('conversations.store') }}" method="post">
                     @csrf
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="date">Datum</label>
                             <input class="form-control" type="date" name="date" id="date"
                                 value="{{ date('Y-m-d') }}">
-                            <label for="invitee_search">Genodigde(n)</label>
-                            <input class="form-control" type="text" id="invitee_search"
-                                placeholder="Zoeken... (3 of meer karakters)">
-
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="time">Tijd</label>
                             <input class="form-control" type="time" name="time" id="time"
                                 value="{{ date('H:i') }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="location">Locatie</label>
+                            <input class="form-control" type="text" name="location" id="location">
+                        </div>
 
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="invitee_search">Genodigde(n)</label>
+                            <input class="form-control" type="text" id="invitee_search"
+                                placeholder="Zoeken... (3 of meer karakters)">
+                        </div>
+                        <div class="col-md-6">
                             <label for="">Selecteer</label>
                             @foreach ($users as $user)
                                 <div class="form-check" style="display: none" user-name="{{ $user->name }}"
@@ -47,6 +56,7 @@
                             @endforeach
                         </div>
                     </div>
+                    <br>
                     <input class="btn btn-primary" type="submit" value="Gesprek aanmaken">
 
                     <script>
