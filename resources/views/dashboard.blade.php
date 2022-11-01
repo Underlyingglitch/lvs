@@ -10,5 +10,7 @@
             <li class="breadcrumb-item active">Dashboard</li>
         </ol>
 
-        Dashboard in ontwikkeling
+        Dashboard in ontwikkeling. Vergeet niet om je wachtwoord te veranderen nadat je voor het eerst hebt ingelogd. Klik
+        daarvoor op het profiel icoontje rechtsboven in het scherm. Voor vragen, neem contact op met
+        st126151@leerling.stellamariscollege.nl
     @endsection
