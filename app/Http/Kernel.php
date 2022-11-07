@@ -38,6 +38,8 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\LastSeenUserActivity::class,
             \App\Http\Middleware\CheckProject::class,
+            \Barryvdh\Debugbar\Middleware\InjectDebugbar::class,
+            \App\Http\Middleware\DebugMiddleware::class,
         ],
 
         'api' => [
