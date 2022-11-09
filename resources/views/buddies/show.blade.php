@@ -8,10 +8,10 @@
         <h1 class="mt-4">
             Buddy details
             @can('buddies.edit')
-                <a class="btn btn-warning" href="{{ route('buddies.edit', ['id' => $buddie->id]) }}">Bewerk</a>
+                <a class="btn btn-warning" href="{{ route('buddies.edit', ['buddie' => $buddie->id]) }}">Bewerk</a>
             @endcan
             @can('buddies.delete')
-                <a class="btn btn-danger" href="{{ route('buddies.destroy', ['id' => $buddie->id]) }}">Verwijder</a>
+                <a class="btn btn-danger" href="{{ route('buddies.destroy', ['buddie' => $buddie->id]) }}">Verwijder</a>
             @endcan
         </h1>
         <ol class="breadcrumb mb-4">
