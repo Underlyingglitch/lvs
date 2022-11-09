@@ -10,7 +10,7 @@
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
             <li class="breadcrumb-item"><a href="{{ route('students.index') }}">Leerlingen</a></li>
             <li class="breadcrumb-item"><a
-                    href="{{ route('students.show', ['id' => $student->id]) }}">{{ $student->name }}</a></li>
+                    href="{{ route('students.show', ['student' => $student->id]) }}">{{ $student->name }}</a></li>
             <li class="breadcrumb-item active">Bewerken</li>
         </ol>
         <div class="card mb-4">
@@ -19,7 +19,7 @@
                 Persoonlijke gegevens
             </div>
             <div class="card-body">
-                <form action="{{ URL::signedRoute('students.edit', ['id' => $student->id]) }}" method="post">
+                <form action="{{ URL::signedRoute('students.edit', ['student' => $student->id]) }}" method="post">
                     @csrf
                     <div class="row">
                         <div class="col-md-4">

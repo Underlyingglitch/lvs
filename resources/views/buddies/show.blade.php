@@ -69,7 +69,8 @@
                             @foreach ($buddie->students as $student)
                                 <tr>
                                     <td>
-                                        <a class="btn-link" href="{{ route('students.show', ['id' => $student->id]) }}">
+                                        <a class="btn-link"
+                                            href="{{ route('students.show', ['student' => $student->id]) }}">
                                             {{ $student->name }} <i class="fas fa-arrow-up-right-from-square"></i>
                                         </a>
                                     </td>

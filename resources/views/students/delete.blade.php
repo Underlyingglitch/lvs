@@ -10,7 +10,7 @@
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
             <li class="breadcrumb-item"><a href="{{ route('students.index') }}">Leerlingen</a></li>
             <li class="breadcrumb-item"><a
-                    href="{{ route('students.show', ['id' => $student->id]) }}">{{ $student->name }}</a>
+                    href="{{ route('students.show', ['student' => $student->id]) }}">{{ $student->name }}</a>
             </li>
             <li class="breadcrumb-item active">Verwijderen</li>
         </ol>
@@ -20,7 +20,7 @@
             gebruikersaccount zal verloren
             gaan en de gebruiker zal niet meer kunnen inloggen. Deze actie kan niet ongedaan gemaakt worden!
         </div>
-        <form action="{{ route('students.destroy', ['id' => $student->id]) }}" method="post">
+        <form action="{{ route('students.destroy', ['student' => $student->id]) }}" method="post">
             @csrf
             <button class="btn btn-danger" type="submit">Bevestigen</button>
             <button class="btn btn-secondary" href="{{ url()->previous() }}">Annuleren</button>

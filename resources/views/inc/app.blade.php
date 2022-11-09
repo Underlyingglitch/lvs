@@ -85,7 +85,7 @@
                                 @php($students = auth()->user()->students)
                                 @foreach ($students as $student)
                                     <a class="nav-link"
-                                        href="{{ route('students.show', ['id' => $student->id]) }}">{{ $student->name }}</a>
+                                        href="{{ route('students.show', ['student' => $student->id]) }}">{{ $student->name }}</a>
                                 @endforeach
                             </nav>
                         </div>
