@@ -64,12 +64,12 @@ Route::middleware('auth')->group(function(){
                 Route::get('/', 'index')->name('index');
                 Route::get('/create', 'create')->name('create');
                 Route::post('/create', 'store')->name('store');
-                Route::get('/{id}', 'show')->name('show');
-                Route::post('/{id}/answer', 'answer')->name('answer');
-                Route::get('/{id}/answer/delete', 'delete_answer')->name('delete_answer');
-                Route::get('/{id}/publish', 'publish')->name('publish');
-                Route::get('/{id}/delete', 'delete')->name('delete');
-                Route::post('/{id}/delete/confirm', 'destroy')->name('destroy');
+                Route::get('/{question}', 'show')->name('show');
+                Route::post('/{question}/answer', 'answer')->name('answer');
+                Route::get('/{question}/answer/delete', 'delete_answer')->name('delete_answer');
+                Route::get('/{question}/publish', 'publish')->name('publish');
+                Route::get('/{question}/delete', 'delete')->name('delete');
+                Route::post('/{question}/delete/confirm', 'destroy')->name('destroy');
             });
         });
     });

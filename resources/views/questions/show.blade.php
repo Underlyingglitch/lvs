@@ -8,11 +8,11 @@
         <h1 class="mt-4">
             Vraag #{{ $question->id }}
             @can('questions.delete')
-                <a class="btn btn-danger" href="{{ route('questions.delete', ['id' => $question->id]) }}">Verwijder</a>
+                <a class="btn btn-danger" href="{{ route('questions.delete', ['question' => $question->id]) }}">Verwijder</a>
             @endcan
             @if (auth()->user()->can('questions.publish') && $question->answer)
                 <a class="btn @if ($question->published) btn-warning @else btn-success @endif"
-                    href="{{ route('questions.publish', ['id' => $question->id]) }}">
+                    href="{{ route('questions.publish', ['question' => $question->id]) }}">
                     @if ($question->published)
                         Niet publiceren
                     @else
@@ -41,7 +41,8 @@
                 <div class="card-header">
                     Antwoord
                     @can('answers.delete')
-                        <a class="btn btn-danger" href="{{ route('questions.delete_answer', ['id' => $question->id]) }}"><i
+                        <a class="btn btn-danger"
+                            href="{{ route('questions.delete_answer', ['question' => $question->id]) }}"><i
                                 class="fas fa-trash"></i></a>
                     @endcan
                 </div>
@@ -53,7 +54,7 @@
                 </div>
             </div>
         @elseif(auth()->user()->can('answers.add'))
-            <form action="{{ route('questions.answer', ['id' => $question->id]) }}" method="post">
+            <form action="{{ route('questions.answer', ['question' => $question->id]) }}" method="post">
                 @csrf
                 <textarea class="form-control" name="content" cols="30" rows="5" placeholder="Beantwoord deze vraag"></textarea>
                 <br>

@@ -64,11 +64,11 @@
                                 <td>{{ Carbon\Carbon::parse($question->created_at) }}</td>
                                 <td>
                                     <a class="btn btn-sm btn-info"
-                                        href="{{ route('questions.show', ['id' => $question->id]) }}"><i
+                                        href="{{ route('questions.show', ['question' => $question->id]) }}"><i
                                             class="fas fa-info-circle"></i></a>
                                     @can('questions.delete')
                                         <a class="btn btn-sm btn-danger"
-                                            href="{{ route('questions.delete', ['id' => $question->id]) }}"><i
+                                            href="{{ route('questions.delete', ['question' => $question->id]) }}"><i
                                                 class="fas fa-trash"></i></a>
                                     @endcan
                                 </td>
