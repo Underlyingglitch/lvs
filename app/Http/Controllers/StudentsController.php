@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class StudentsController extends Controller
 {
@@ -13,42 +12,35 @@ class StudentsController extends Controller
         $this->middleware(['auth']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        if (Gate::allows('students.view')) {
+        if ($request->user()->can('viewAny', User::class)) {
             $students = User::role('student')->get();
-        } else if (Gate::allows('students.viewown')) {
+        } else if ($request->user()->can('viewOwn', User::class)) {
             $students = auth()->user()->students;
         } else {
             abort(403);
         }
-
-        // $students = Student::all();
 
         return view('students.index', [
             'students' => $students
         ]);
     }
 
-    public function show($id)
+    public function show(User $student)
     {
-        // $this->authorize('students.view');
-        //If not a teacher of a buddie
-        abort_if((Gate::denies('students.view') && Gate::denies('students.viewown')), 403);
+        $this->authorize('view', $student);
 
-        $student = User::find($id);
-        abort_if(($student->buddie->id != auth()->user()->id && Gate::denies('students.view')), 403);
+        if ($student->get_role() != 'student') abort(404);
         
         return view('students.show', [
             'student' => $student
         ]);
     }
 
-    public function edit($id)
+    public function edit(User $student)
     {
-        $this->authorize('students.edit');
-
-        $student = User::find($id);
+        $this->authorize('update', $student);
 
         return view('students.edit', [
             'student' => $student,
@@ -56,13 +48,10 @@ class StudentsController extends Controller
         ]);
     }
 
-    public function update($id, Request $request)
+    public function update(User $student, Request $request)
     {
-        $this->authorize('students.edit');
-
         abort_unless($request->hasValidSignature(), 401);
-
-        $student = User::find($id);
+        $this->authorize('update', $student);
 
         $student->group = $request->group;
         $student->studentid = $request->studentid;
@@ -77,27 +66,23 @@ class StudentsController extends Controller
         
         $student->save();
 
-        return redirect()->route('students.show', ['id' => $id]);
+        return redirect()->route('students.show', ['student' => $student->id]);
     }
 
-    public function delete($id)
+    public function delete(User $student)
     {
-        $this->authorize('students.delete');
-
-        $student = User::find($id);
+        $this->authorize('delete', $student);
 
         return view('students.delete', [
-            'Student' => $student
+            'student' => $student
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(User $student)
     {
-        $this->authorize('students.delete');
+        $this->authorize('delete', $student);
 
-        $buddie = User::find($id);
-
-        $buddie->delete();
+        $student->delete();
 
         return redirect()->view('students.index');
     }
