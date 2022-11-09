@@ -12,9 +12,7 @@ class UserPolicy
 
     public function before(User $user, $ability)
     {
-        if ($user->get_role() == "admin") {
-            return Response::allow();
-        }
+        if ($user->get_role() == "admin") return true;
     }
 
     /**
@@ -48,7 +46,7 @@ class UserPolicy
         if ($user->id === $model->buddie_id) return Response::allow();
         if ($user->get_role() == "teacher") return Response::allow();
 
-        return Response::deny('Geen toegang tot deze gebruiker');
+        return Response::deny('Je hebt geen toegang tot deze gebruiker');
     }
 
     /**
@@ -59,7 +57,8 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        //
+        if ($user->get_role() == 'teacher') return Response::allow();
+        return Response::deny('Je mag geen gebruikers aanmaken');
     }
 
     /**
@@ -73,7 +72,14 @@ class UserPolicy
     {
         if ($user->id === $model->id) return Response::allow();
         if ($user->get_role() == 'teacher') return Response::allow();
-        return Response::deny('Je mag geen bewerkingen uitvoeren');
+        return Response::deny('Je mag geen bewerkingen aan gebruikers uitvoeren');
+    }
+
+    public function changepassword(User $user, User $model)
+    {
+        if ($user->id === $model->buddie_id) return Response::allow();
+        if ($user->get_role() == 'teacher') return Response::allow();
+        return Response::deny('Je mag geen wachtwoorden opnieuw instellen');
     }
 
     /**
