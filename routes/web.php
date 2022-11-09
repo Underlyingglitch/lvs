@@ -34,11 +34,11 @@ Route::middleware('auth')->group(function(){
         Route::prefix('buddies')->group(function () {
             Route::name('buddies.')->group(function () {
                 Route::get('/', 'index')->name('index');
-                Route::get('/{id}', 'show')->name('show');
-                Route::get('/{id}/edit', 'edit')->name('edit');
-                Route::post('/{id}/edit', 'update');
-                Route::get('/{id}/delete', 'delete')->name('destroy');
-                Route::post('/{id}/delete', 'destroy');
+                Route::get('/{buddie}', 'show')->name('show');
+                Route::get('/{buddie}/edit', 'edit')->name('edit');
+                Route::post('/{buddie}/edit', 'update');
+                Route::get('/{buddie}/delete', 'delete')->name('destroy');
+                Route::post('/{buddie}/delete', 'destroy');
             });
         });
     });
@@ -49,11 +49,11 @@ Route::middleware('auth')->group(function(){
                 Route::get('/', 'index')->name('index');
                 Route::get('/create', 'create')->name('create');
                 Route::post('/create', 'store')->name('store');
-                Route::get('/{id}', 'show')->name('show');
-                Route::get('/{id}/edit', 'edit')->name('edit');
-                Route::post('/{id}/edit', 'update');
-                Route::get('/{id}/delete', 'delete')->name('delete');
-                Route::post('/{id}/delete/confirm', 'destroy')->name('destroy');
+                Route::get('/{user}', 'show')->name('show');
+                Route::get('/{user}/edit', 'edit')->name('edit');
+                Route::post('/{user}/edit', 'update');
+                Route::get('/{user}/delete', 'delete')->name('delete');
+                Route::post('/{user}/delete/confirm', 'destroy')->name('destroy');
             });
         });
     });
