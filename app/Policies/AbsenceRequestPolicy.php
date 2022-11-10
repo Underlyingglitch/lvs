@@ -13,7 +13,7 @@ class AbsenceRequestPolicy
 
     public function before(User $user, $ability)
     {
-        if ($user->get_role() == "admin") return true;
+        if ($user->role == "admin") return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class AbsenceRequestPolicy
      */
     public function viewAny(User $user)
     {
-        if ($user->get_role() == 'teacher') return Response::allow();
+        if ($user->role == 'teacher') return Response::allow();
         return Response::deny('Geen toegang');
     }
 

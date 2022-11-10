@@ -31,7 +31,7 @@ class StudentsController extends Controller
     {
         $this->authorize('view', $student);
 
-        if ($student->get_role() != 'student') abort(404);
+        if ($student->role != 'student') abort(404);
         
         return view('students.show', [
             'student' => $student

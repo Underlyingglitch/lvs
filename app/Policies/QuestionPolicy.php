@@ -13,18 +13,18 @@ class QuestionPolicy
 
     public function before(User $user, $ability)
     {
-        if ($user->get_role() == "admin") return true;
+        if ($user->role == "admin") return true;
     }
 
     public function viewAny(User $user)
     {
-        if (in_array($user->get_role(), ['teacher', 'buddie'])) return true;
+        if (in_array($user->role, ['teacher', 'buddie'])) return true;
         return;
     }
 
     public function viewOwn(User $user)
     {
-        if ($user->get_role() == 'student') return true;
+        if ($user->role == 'student') return true;
         return;
     }
 
@@ -37,19 +37,19 @@ class QuestionPolicy
 
     public function create(User $user)
     {
-        if (in_array($user->get_role(), ['student', 'buddie'])) return Response::allow();
+        if (in_array($user->role, ['student', 'buddie'])) return Response::allow();
         return Response::deny('Je mag geen nieuwe vragen aanmaken');
     }
 
     public function delete(User $user)
     {
-        if ($user->get_role() == 'teacher') return Response::allow();
+        if ($user->role == 'teacher') return Response::allow();
         return Response::deny('Je mag geen vragen verwijderen');
     }
 
     public function publish(User $user)
     {
-        if ($user->get_role() == 'teacher') return Response::allow();
+        if ($user->role == 'teacher') return Response::allow();
         return Response::deny('Je mag geen vragen publiceren');
     }
 }

@@ -13,12 +13,12 @@ class ConversationPolicy
 
     public function before(User $user, $ability)
     {
-        if ($user->get_role() == "admin") return true;
+        if ($user->role == "admin") return true;
     }
  
     public function viewAny(User $user)
     {
-        if ($user->get_role() == "teacher") return true;
+        if ($user->role == "teacher") return true;
         return;
     }
 

@@ -18,7 +18,7 @@ class ScheduleController extends Controller
     public function index(Request $request)
     {
         // return view('schedule.notready');
-        abort_unless(in_array(auth()->user->get_role(), ['student', 'buddie']), 403);
+        abort_unless(in_array(auth()->user()->role, ['student', 'buddie']), 403);
         $user = auth()->user();
         
         // TODO: implement caching
@@ -105,7 +105,7 @@ class ScheduleController extends Controller
     {
         // TODO: Implement request
         // abort(501, 'Feature not implemented');
-        abort_unless(in_array(auth()->user->get_role(), ['student', 'buddie']), 403);
+        abort_unless(in_array(auth()->user()->role, ['student', 'buddie']), 403);
 
         abort_unless($request->hasValidSignature(), 401);
 

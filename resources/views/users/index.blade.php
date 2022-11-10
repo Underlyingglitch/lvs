@@ -40,7 +40,7 @@
                             <tr>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>{{ $user->get_role() }}</td>
+                                <td>{{ $user->get_role_name() }}</td>
                                 <td>
                                     @if (strtotime($user->last_seen) > strtotime('-1 minutes'))
                                         <span class="text-success">Online</span>

@@ -13,7 +13,7 @@ class ProjectPolicy
 
     public function before(User $user, $ability)
     {
-        if ($user->get_role() == "admin" && $ability != 'viewOwn') return true;
+        if ($user->role == "admin" && $ability != 'viewOwn') return true;
     }
 
     public function viewAny(User $user)
@@ -23,13 +23,13 @@ class ProjectPolicy
 
     public function viewOwn(User $user)
     {
-        if ($user->get_role() == 'student') return true;
+        if ($user->role == 'student') return true;
         return;
     }
 
     public function view(User $user, Project $project)
     {
-        if ($user->get_role() == 'teacher') return Response::allow();
+        if ($user->role == 'teacher') return Response::allow();
         if ($user->id == $project->user_id) return Response::allow();
         if ($user->id == $project->user->buddie_id) return Response::allow();
         return Response::deny('Je mag dit project niet bekijken');
@@ -37,7 +37,7 @@ class ProjectPolicy
   
     public function create(User $user)
     {
-        if ($user->get_role() == 'student') return Response::allow();
+        if ($user->role == 'student') return Response::allow();
         return Response::deny('Je mag geen projecten aanmaken');
     }
    

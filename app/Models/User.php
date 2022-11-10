@@ -55,12 +55,15 @@ class User extends Authenticatable implements Auditable
         'email_verified_at' => 'datetime',
     ];
 
-    public function get_role()
+    public function get_role_name()
     {
-        if (count($this->getRoleNames()) > 0) {
-            return $this->getRoleNames()[0];
-        }
-        return '-';
+        $role_names = [
+            'admin' => 'Administrator',
+            'teacher' => 'Docent',
+            'buddie' => 'Buddy',
+            'student' => 'Leerling'
+        ];
+        return $role_names[$this->role];
     }
 
     public function students() {

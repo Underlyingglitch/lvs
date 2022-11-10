@@ -43,7 +43,7 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Dashboard
                     </a>
-                    @if (auth()->user()->get_role() == 'student')
+                    @if (auth()->user()->role == 'student')
                         <a class="nav-link @if ($page_id == 'projects') active @endif"
                             href="{{ route('projects.own') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-project-diagram"></i></div>
@@ -63,8 +63,7 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-comments"></i></div>
                         Gesprekken
                     </a>
-                    @if (auth()->user()->get_role() == 'student' ||
-                        auth()->user()->get_role() == 'buddie')
+                    @if (auth()->user()->role == 'student' || auth()->user()->role == 'buddie')
                         <a class="nav-link @if ($page_id == 'schedule') active @endif"
                             href="{{ route('schedule.index') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-calendar"></i></div>
@@ -180,7 +179,7 @@
         <div class="sb-sidenav-footer" style="background-color: rgb(57, 72, 151) !important">
             <div class="small">Ingelogd als:</div>
             {{ auth()->user()->name }}
-            {{ auth()->user()->get_role() }}
+            <small><i>{{ auth()->user()->get_role_name() }}</i></small>
         </div>
     </nav>
 </div>
