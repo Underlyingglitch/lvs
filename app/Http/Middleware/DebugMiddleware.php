@@ -17,10 +17,8 @@ class DebugMiddleware
     public function handle(Request $request, Closure $next)
     {
         // TODO - Implement new authentication system
-        if (auth()->user() && in_array(auth()->id(), [1])) {
+        if (auth()->user() && in_array(auth()->id(), [1]) && !env('APP_DEBUG')) {
             \Debugbar::enable();
-        } else {
-            \Debugbar::disable();
         }
 
         return $next($request);
