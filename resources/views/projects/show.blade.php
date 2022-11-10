@@ -10,7 +10,7 @@
         </h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-            @can('projects.view')
+            @can('viewAny', \App\Models\Project::class)
                 <li class="breadcrumb-item"><a href="{{ route('projects.index') }}">Projecten</a></li>
             @else
                 <li class="breadcrumb-item active">Projecten</li>

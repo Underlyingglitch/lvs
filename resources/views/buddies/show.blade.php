@@ -7,10 +7,10 @@
     <div class="container-fluid px-4">
         <h1 class="mt-4">
             Buddy details
-            @can('buddies.edit')
+            @can('update', \App\Models\User::class)
                 <a class="btn btn-warning" href="{{ route('buddies.edit', ['buddie' => $buddie->id]) }}">Bewerk</a>
             @endcan
-            @can('buddies.delete')
+            @can('delete', \App\Models\User::class)
                 <a class="btn btn-danger" href="{{ route('buddies.destroy', ['buddie' => $buddie->id]) }}">Verwijder</a>
             @endcan
         </h1>

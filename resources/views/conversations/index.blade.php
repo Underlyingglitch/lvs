@@ -64,7 +64,7 @@
                                 @endif
                                 <td>
                                     <a class="btn btn-sm btn-info"
-                                        href="{{ route('conversations.show', ['id' => $conversation->id]) }}"><i
+                                        href="{{ route('conversations.show', ['conversation' => $conversation->id]) }}"><i
                                             class="fas fa-info-circle"></i></a>
                                 </td>
                             </tr>

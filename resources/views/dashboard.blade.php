@@ -1,6 +1,7 @@
 @extends('inc.app')
 
 @php($page_id = 'dashboard')
+@section('title', 'Dashboard')
 
 @section('content')
     <div class="container-fluid px-4">

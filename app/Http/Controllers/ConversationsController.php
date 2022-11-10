@@ -5,40 +5,34 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Conversation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use App\Models\ConversationPreparation;
 
 class ConversationsController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware(['auth']);
-    // }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function __construct()
     {
-        // TODO - Implement authentication
-        $conversations = auth()->user()->organized_conversations
+        $this->middleware(['auth']);
+    }
+
+    public function index(Request $request)
+    {
+        if ($request->user()->can('viewAny')) {
+            $conversations = Conversation::all();
+        } else {
+            $conversations = auth()->user()->organized_conversations
                         ->merge(auth()->user()->invited_conversations)
                         ->all();
+        }
 
         return view('conversations.index', [
             'conversations' => $conversations
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        // TODO - implement authentication
+        $this->authorize('create', Conversation::class);
 
         $users = User::all()->where('id', '!=', auth()->user()->id);
 
@@ -47,15 +41,10 @@ class ConversationsController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        // TODO - implement authentication
+        $this->authorize('create', Conversation::class);
+
         $conversation = new Conversation();
         $conversation->conversation_date = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $request->date.' '.$request->time);
         $conversation->organizer_id = auth()->user()->id;
@@ -68,14 +57,15 @@ class ConversationsController extends Controller
         return redirect()->route('conversations.index')->with('success', 'Gesprek succesvol aangemaakt');
     }
 
-    public function prepare($id, Request $request)
+    public function prepare(Conversation $conversation, Request $request)
     {
-        // TODO - implement authentication
-        $preparation = ConversationPreparation::where([['user_id', auth()->user()->id],['conversation_id', $id]])->first();
+        $this->authorize('create', [ConversationPreparation::class, $conversation]);
+        
+        $preparation = ConversationPreparation::where([['user_id', auth()->user()->id],['conversation_id', $conversation->id]])->first();
         if (!$preparation) {
             $preparation = new ConversationPreparation();
             $preparation->user_id = auth()->user()->id;
-            $preparation->conversation_id = $id;
+            $preparation->conversation_id = $conversation->id;
         }
         $preparation->content = $request->preparation;
         $preparation->save();
@@ -83,36 +73,28 @@ class ConversationsController extends Controller
         return redirect()->back()->with('success', 'Succesvol opgeslagen');
     }
 
-    public function addinvitees($id, Request $request)
+    public function addinvitees(Conversation $conversation, Request $request)
     {
-        $conversation = Conversation::find($id);
-        
+        $this->authorize('update', $conversation);
+
         $invitees = User::find($request->invitees);
         $conversation->invitees()->attach($invitees);
 
         return redirect()->back()->with('success', 'Gebruiker(s) toegevoegd');
     }
 
-    public function removeinvitee($id, Request $request)
+    public function removeinvitee(Conversation $conversation, Request $request)
     {
-        $conversation = Conversation::find($id);
-        
+        $this->authorize('update', $conversation);
+
         $conversation->invitees()->detach(array_flip($request->all())['Verwijder']);
 
         return redirect()->back()->with('success', 'Gebruiker verwijderd');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(Conversation $conversation)
     {
-        // TODO - implement authentication
-
-        $conversation = Conversation::find($id);
+        $this->authorize('view', $conversation);
 
         $users = User::all()->where('id', '!=', auth()->user()->id)->whereNotIn('id', $conversation->invitees->pluck('id'));
 
@@ -122,43 +104,13 @@ class ConversationsController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update(Request $request, Conversation $conversation)
     {
-        //
-    }
+        $this->authorize('update', $conversation);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        // TODO - implement authentication
-
-        $conversation = Conversation::find($id);
         $conversation->report = $request->report;
         $conversation->save();
 
         return redirect()->back()->with('success', 'Gesprek afgerond!');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

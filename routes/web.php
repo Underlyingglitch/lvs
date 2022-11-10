@@ -117,11 +117,11 @@ Route::middleware('auth')->group(function(){
                 Route::get('/', 'index')->name('index');
                 Route::get('/create', 'create')->name('create');
                 Route::post('/create', 'store')->name('store');
-                Route::get('/{id}', 'show')->name('show');
-                Route::post('/{id}', 'update')->name('update');
-                Route::post('/{id}/prepare', 'prepare')->name('prepare');
-                Route::post('/{id}/addinvitees', 'addinvitees')->name('addinvitees');
-                Route::post('/{id}/removeinvitee', 'removeinvitee')->name('removeinvitee');
+                Route::get('/{conversation}', 'show')->name('show');
+                Route::post('/{conversation}', 'update')->name('update');
+                Route::post('/{conversation}/prepare', 'prepare')->name('prepare');
+                Route::post('/{conversation}/addinvitees', 'addinvitees')->name('addinvitees');
+                Route::post('/{conversation}/removeinvitee', 'removeinvitee')->name('removeinvitee');
             });
         });
     });
