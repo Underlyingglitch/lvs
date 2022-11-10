@@ -16,7 +16,7 @@ class CheckProject
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->user()->hasRole('student') && $request->user()->project == null) {
+        if ($request->user()->role == 'student' && $request->user()->project == null) {
             return redirect()->route('projects.own');
         }
         return $next($request);

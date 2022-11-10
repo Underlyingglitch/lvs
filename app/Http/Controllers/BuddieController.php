@@ -16,7 +16,7 @@ class BuddieController extends Controller
     {
         $this->authorize('viewAny', User::class);
 
-        $buddies = User::role('buddie')->get();
+        $buddies = User::all()->where('role', '=', 'buddie');
 
         return view('buddies.index', [
             'buddies' => $buddies

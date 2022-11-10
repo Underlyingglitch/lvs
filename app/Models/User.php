@@ -8,7 +8,6 @@ use App\Models\SchoolYear;
 use App\Models\AbsenceRequest;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\SomTodayiCalAccount;
-use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,7 +17,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $auditExclude = [
         'last_seen',

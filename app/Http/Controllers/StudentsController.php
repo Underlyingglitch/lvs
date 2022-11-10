@@ -15,7 +15,7 @@ class StudentsController extends Controller
     public function index(Request $request)
     {
         if ($request->user()->can('viewAny', User::class)) {
-            $students = User::role('student')->get();
+            $students = User::all()->where('role', '=', 'student');
         } else if ($request->user()->can('viewOwn', User::class)) {
             $students = auth()->user()->students;
         } else {
