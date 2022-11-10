@@ -16,6 +16,6 @@ class SchoolYear extends Model
 
     public static function current()
     {
-        return SchoolYear::where('end', '=', null)->first()->id;
+        return SchoolYear::where('end', '=', null)->first();
     }
 }

@@ -102,7 +102,7 @@ class User extends Authenticatable implements Auditable
 
     public function project()
     {
-        return $this->hasOne(Project::class)->where('school_year_id',SchoolYear::current());
+        return $this->hasOne(Project::class)->where('school_year_id',SchoolYear::current()->id);
     }
 
     public function organized_conversations()
