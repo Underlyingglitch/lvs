@@ -10,7 +10,7 @@
         </h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-            @can('projects.view')
+            @can('viewAny', \App\Models\Project::class)
                 <li class="breadcrumb-item"><a href="{{ route('projects.index') }}">Projecten</a></li>
             @else
                 <li class="breadcrumb-item active">Projecten</li>
@@ -20,20 +20,20 @@
 
         <div class="row">
             <div class="col-md-8">
+
                 <div class="card mb-4">
                     <div class="card-header">
-                        Snelle acties
+                        Leerlingnotities
                     </div>
                     <div class="card-body">
-
-                    </div>
-                </div>
-                <div class="card mb-4">
-                    <div class="card-header">
-                        Tijdlijn
-                    </div>
-                    <div class="card-body">
-
+                        @if (auth()->user()->role == 'student')
+                            <form action="{{ route('projects.savenotes', ['project' => $project->id]) }}" method="post">
+                                @csrf()
+                                <textarea class="form-control" name="notes" id="" cols="30" rows="10">{{ $project->notes }}</textarea>
+                                <input class="btn btn-primary" type="submit" value="Opslaan">
+                            </form>
+                        @else
+                        @endif
                     </div>
                 </div>
             </div>

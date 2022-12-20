@@ -9,7 +9,8 @@
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
             <li class="breadcrumb-item"><a href="{{ route('buddies.index') }}">Buddy's</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('buddies.show', ['id' => $buddie->id]) }}">{{ $buddie->name }}</a>
+            <li class="breadcrumb-item"><a
+                    href="{{ route('buddies.show', ['buddie' => $buddie->id]) }}">{{ $buddie->name }}</a>
             </li>
             <li class="breadcrumb-item active">Bewerken</li>
         </ol>
@@ -19,7 +20,7 @@
                 Persoonlijke gegevens
             </div>
             <div class="card-body">
-                <form action="{{ URL::signedRoute('buddies.edit', ['id' => $buddie->id]) }}" method="post">
+                <form action="{{ URL::signedRoute('buddies.edit', ['buddie' => $buddie->id]) }}" method="post">
                     @csrf
                     <div class="row">
                         <div class="col-md-4">

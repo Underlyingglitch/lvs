@@ -15,17 +15,20 @@ class QuestionController extends Controller
         $this->middleware(['auth']);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request)
     {
-        if (Gate::allows('questions.view')) {
-            $questions = Question::all()->where('school_year_id', '=', SchoolYear::current());
-        } else if (Gate::allows('questions.viewown')) {
-            $questions = auth()->user()->questions->where('school_year_id', '=', SchoolYear::current());
+        if ($request->user()->can('viewAny', Question::class)) {
+            $questions = Question::all()
+                        ->where('school_year_id', '=', SchoolYear::current()->id);
+        } else if ($request->user()->can('viewOwn', Question::class)) {
+            $published = Question::where([
+                ['school_year_id', '=', SchoolYear::current()->id],
+                ['published', '=', 1]
+            ])->get();
+
+            $questions = auth()->user()->questions
+                        ->where('school_year_id', '=', SchoolYear::current()->id)
+                        ->merge($published);
         } else {
             abort(403);
         }
@@ -35,27 +38,16 @@ class QuestionController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        $this->authorize('questions.add');
+        $this->authorize('create', Question::class);
 
         return view('questions.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $this->authorize('questions.add');
+        $this->authorize('create', Question::class);
 
         $question = new Question();
         
@@ -70,36 +62,22 @@ class QuestionController extends Controller
         return redirect()->route('questions.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(Question $question)
     {
-        if (Gate::denies('questions.view') && Gate::denies('questions.viewown')) {
-            abort(403);
-        }
-
-        $question = Question::findOrFail($id);
-
-        if ($question->user->id != auth()->user()->id) {
-            abort(403);
-        }
+        $this->authorize('view', $question);
 
         return view('questions.show', [
             'question' => $question
         ]);
     }
 
-    public function answer($id, Request  $request)
+    public function answer(Question $question, Request $request)
     {
-        $this->authorize('answers.add');
+        $this->authorize('create', Answer::class);
 
         $answer = new Answer();
         $answer->content = $request->content;
-        $answer->question_id = $id;
+        $answer->question_id = $question->id;
         $answer->user_id = auth()->user()->id;
 
         $answer->save();
@@ -107,11 +85,10 @@ class QuestionController extends Controller
         return redirect()->back();
     }
 
-    public function publish($id)
+    public function publish(Question $question)
     {
-        $this->authorize('questions.publish');
+        $this->authorize('publish', Question::class);
 
-        $question = Question::find($id);
         $question->published = !$question->published;
 
         $question->save();
@@ -119,11 +96,9 @@ class QuestionController extends Controller
         return redirect()->back();
     }
 
-    public function delete_answer($id)
+    public function delete_answer(Question $question)
     {
-        $this->authorize('answers.delete');
-
-        $question = Question::find($id);
+        $this->authorize('delete', Answer::class);
 
         if ($question->answer) {
             $question->answer->delete();
@@ -134,25 +109,17 @@ class QuestionController extends Controller
         return redirect()->back();
     }
 
-    public function delete($id)
+    public function delete(Question $question)
     {
-        $this->authorize('questions.delete');
-
-        $question = Question::find($id);
+        $this->authorize('delete', Question::class);
 
         return view('questions.delete', [
             'question' => $question
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(Question $question)
     {
-        dd('destroy');
+        abort(404, 'Kan (nog) geen vragen verwijderen');
     }
 }

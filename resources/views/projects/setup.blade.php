@@ -44,8 +44,7 @@
                             <input class="form-control" type="text" value="{{ auth()->user()->buddie->name }}"
                                 readonly><br>
                             <label for="schoolyear">Schooljaar</label>
-                            <input class="form-control" type="text"
-                                value="{{ \App\Models\SchoolYear::find(\App\Models\SchoolYear::current())->name }}"
+                            <input class="form-control" type="text" value="{{ \App\Models\SchoolYear::current()->name }}"
                                 readonly>
                         </form>
                     </div>

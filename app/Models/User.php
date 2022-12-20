@@ -8,7 +8,6 @@ use App\Models\SchoolYear;
 use App\Models\AbsenceRequest;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\SomTodayiCalAccount;
-use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,7 +17,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $auditExclude = [
         'last_seen',
@@ -55,12 +54,15 @@ class User extends Authenticatable implements Auditable
         'email_verified_at' => 'datetime',
     ];
 
-    public function get_role()
+    public function get_role_name()
     {
-        if (count($this->getRoleNames()) > 0) {
-            return $this->getRoleNames()[0];
-        }
-        return '-';
+        $role_names = [
+            'admin' => 'Administrator',
+            'teacher' => 'Docent',
+            'buddie' => 'Buddy',
+            'student' => 'Leerling'
+        ];
+        return $role_names[$this->role];
     }
 
     public function students() {
@@ -102,7 +104,7 @@ class User extends Authenticatable implements Auditable
 
     public function project()
     {
-        return $this->hasOne(Project::class)->where('school_year_id',SchoolYear::current());
+        return $this->hasOne(Project::class)->where('school_year_id',SchoolYear::current()->id);
     }
 
     public function organized_conversations()
@@ -113,5 +115,15 @@ class User extends Authenticatable implements Auditable
     public function invited_conversations()
     {
         return $this->belongsToMany(Conversation::class);
+    }
+
+    public function teacher_notes()
+    {
+        return $this->hasOne(TeacherNote::class);
+    }
+
+    public function buddy_notes()
+    {
+        return $this->hasOne(BuddyNote::class);
     }
 }

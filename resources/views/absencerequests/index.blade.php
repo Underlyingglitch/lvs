@@ -1,6 +1,8 @@
 @extends('inc.app')
 @php($page_id = 'absencerequests')
 
+@section('title', 'Verzuimverzoeken')
+
 @section('content')
     <div class="container-fluid px-4">
         <h1 class="mt-4">Verzuimverzoeken</h1>
@@ -36,51 +38,10 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        @foreach ($students as $student)
-                            <tr>
-                                <td>{{ $student->leerlingnummer }}</td>
-                                <td>{{ $student->user->name }}</td>
-                                <td>{{ $student->user->email }}</td>
-                                <td>{{ $student->klas }}</td>
-                                <td>
-                                    @if ($student->buddie != null)
-                                        {{ $student->buddie->user->name }}
-                                    @else
-                                        -
-                                    @endif
-                                </td>
-                                <td>
-                                    @if (strtotime($student->user->last_seen) > strtotime('-1 minutes'))
-                                        <span class="text-success">Online</span>
-                                    @elseif($student->user->last_seen == null)
-                                        <span class="text-secondary">Nooit</span>
-                                    @else
-                                        <span
-                                            class="text-secondary">{{ Carbon\Carbon::parse($student->user->last_seen)->diffForHumans() }}</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <a class="btn btn-sm btn-info"
-                                        href="{{ route('students.show', ['id' => $student->id]) }}"><i
-                                            class="fas fa-info-circle"></i></a>
-                                    @can('students.edit')
-                                        <a class="btn btn-sm btn-warning"
-                                            href="{{ route('students.edit', ['id' => $student->id]) }}"><i
-                                                class="fas fa-pencil"></i></a>
-                                    @endcan
-                                    @can('students.delete')
-                                        <a class="btn btn-sm btn-danger"
-                                            href="{{ route('students.destroy', ['id' => $student->id]) }}"><i
-                                                class="fas fa-trash"></i></a>
-                                    @endcan
-                                </td>
-                            </tr>
-                        @endforeach
+
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 @endsection
-
-{{}}

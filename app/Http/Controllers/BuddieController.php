@@ -14,44 +14,37 @@ class BuddieController extends Controller
 
     public function index()
     {
-        $this->authorize('buddies.view');
+        $this->authorize('viewAny', User::class);
 
-        $buddies = User::role('buddie')->get();
+        $buddies = User::all()->where('role', '=', 'buddie');
 
         return view('buddies.index', [
             'buddies' => $buddies
         ]);
     }
 
-    public function show($id)
+    public function show(User $buddie)
     {
-        $this->authorize('buddies.view');
-
-        $buddie = User::find($id);
+        $this->authorize('view', $buddie);
 
         return view('buddies.show', [
             'buddie' => $buddie
         ]);
     }
 
-    public function edit($id)
+    public function edit(User $buddie)
     {
-        $this->authorize('buddies.edit');
-
-        $buddie = User::find($id);
+        $this->authorize('update', $buddie);
 
         return view('buddies.edit', [
             'buddie' => $buddie
         ]);
     }
 
-    public function update($id, Request $request)
+    public function update(User $buddie, Request $request)
     {
-        $this->authorize('buddies.edit');
-
         abort_unless($request->hasValidSignature(), 401);
-
-        $buddie = User::find($id);
+        $this->authorize('update', $buddie);
 
         $buddie->group = $request->group;
         $buddie->studentid = $request->studentid;
@@ -60,25 +53,21 @@ class BuddieController extends Controller
         
         $buddie->save();
 
-        return redirect()->route('buddies.show', ['id' => $id]);
+        return redirect()->route('buddies.show', ['buddie' => $buddie->id]);
     }
 
-    public function delete($id)
+    public function delete(User $buddie)
     {
-        $this->authorize('buddies.delete');
-
-        $buddie = User::find($id);
+        $this->authorize('delete', $buddie);
 
         return view('buddies.delete', [
             'buddie' => $buddie
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(User $buddie)
     {
-        $this->authorize('buddies.delete');
-
-        $buddie = User::find($id);
+        $this->authorize('delete', $buddie);
 
         $buddie->delete();
 

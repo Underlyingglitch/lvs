@@ -65,16 +65,16 @@
                                 </td>
                                 <td>
                                     <a class="btn btn-sm btn-info"
-                                        href="{{ route('buddies.show', ['id' => $buddie->id]) }}"><i
+                                        href="{{ route('buddies.show', ['buddie' => $buddie->id]) }}"><i
                                             class="fas fa-info-circle"></i></a>
-                                    @can('buddies.edit')
+                                    @if (auth()->user()->role == 'teacher')
                                         <a class="btn btn-sm btn-warning"
-                                            href="{{ route('buddies.edit', ['id' => $buddie->id]) }}"><i
+                                            href="{{ route('buddies.edit', ['buddie' => $buddie->id]) }}"><i
                                                 class="fas fa-pencil"></i></a>
-                                    @endcan
-                                    @can('buddies.delete')
+                                    @endif
+                                    @can(auth()->user()->role == 'admin')
                                         <a class="btn btn-sm btn-danger"
-                                            href="{{ route('buddies.destroy', ['id' => $buddie->id]) }}"><i
+                                            href="{{ route('buddies.destroy', ['buddie' => $buddie->id]) }}"><i
                                                 class="fas fa-trash"></i></a>
                                     @endcan
                                 </td>

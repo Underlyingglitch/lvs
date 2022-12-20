@@ -5,7 +5,7 @@
 
 @section('nav')
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark"
-        @if (env('APP_DEBUG')) style="background-color: red !important" @endif>
+        @if (env('APP_DEBUG')) style="background-color: rgb(57, 72, 151) !important" @endif>
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" href="{{ route('dashboard') }}">LVS</a>
         <!-- Sidebar Toggle-->
@@ -36,19 +36,20 @@
 @section('sidebar')
     <div id="layoutSidenav_nav">
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion"
-            @if (env('APP_DEBUG')) style="background-color: red !important" @endif>
+            @if (env('APP_DEBUG')) style="background-color: rgb(57, 72, 151) !important" @endif>
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <a class="nav-link @if ($page_id == 'dashboard') active @endif" href="{{ route('dashboard') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Dashboard
                     </a>
-                    @can('projects.owns')
-                        <a class="nav-link @if ($page_id == 'projects') active @endif" href="{{ route('projects.own') }}">
+                    @if (auth()->user()->role == 'student')
+                        <a class="nav-link @if ($page_id == 'projects') active @endif"
+                            href="{{ route('projects.own') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-project-diagram"></i></div>
                             Mijn project
                         </a>
-                    @endcan
+                    @endif
                     <a class="nav-link @if ($page_id == 'questions') active @endif"
                         href="{{ route('questions.index') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-question-circle"></i></div>
@@ -62,15 +63,15 @@
                         <div class="sb-nav-link-icon"><i class="fas fa-comments"></i></div>
                         Gesprekken
                     </a>
-                    @can('schedule.view')
+                    @if (auth()->user()->role == 'student' || auth()->user()->role == 'buddie')
                         <a class="nav-link @if ($page_id == 'schedule') active @endif"
                             href="{{ route('schedule.index') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-calendar"></i></div>
                             Rooster
                         </a>
                     @endcan
-                    @if (auth()->user()->can('students.viewown') &&
-                        auth()->user()->cannot('students.view'))
+                    @if (auth()->user()->can('viewOwn', \App\Models\User::class) &&
+                        auth()->user()->cannot('viewAny', \App\Models\User::class))
                         <a class="nav-link @if ($page_id != 'students') collapsed @endif" href="#"
                             data-bs-toggle="collapse" data-bs-target="#collapseStudents"
                             aria-expanded="@if ($page_id == 'students') true @else false @endif"
@@ -85,36 +86,36 @@
                                 @php($students = auth()->user()->students)
                                 @foreach ($students as $student)
                                     <a class="nav-link"
-                                        href="{{ route('students.show', ['id' => $student->id]) }}">{{ $student->name }}</a>
+                                        href="{{ route('students.show', ['student' => $student->id]) }}">{{ $student->name }}</a>
                                 @endforeach
                             </nav>
                         </div>
                     @endif
-                    @can('absencerequest.view')
+                    @can('viewAny', \App\Models\AbsenceRequest::class)
                         <a class="nav-link @if ($page_id == 'absencerequests') active @endif"
                             href="{{ route('absencerequests.index') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-user-clock"></i></div>
                             Verzuimverzoeken
                         </a>
                     @endcan
-                    @canany(['students.view', 'buddies.view', 'users.view'])
+                    @can('viewAny', \App\Models\User::class)
                         <div class="sb-sidenav-menu-heading">Beheer</div>
                     @endcan
-                    @can('students.view')
+                    @can('viewAny', \App\Models\User::class)
                         <a class="nav-link @if ($page_id == 'students') active @endif"
                             href="{{ route('students.index') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                             Leerlingen
                         </a>
                     @endcan
-                    @can('buddies.view')
+                    @can('viewAny', \App\Models\User::class)
                         <a class="nav-link @if ($page_id == 'buddies') active @endif"
                             href="{{ route('buddies.index') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                             Buddy's
                         </a>
                     @endcan
-                    @can('users.view')
+                    @can('viewUsers', \App\Models\User::class)
                         <a class="nav-link @if ($page_id == 'users') active @endif"
                             href="{{ route('users.index') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
@@ -173,22 +174,23 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                     Tables
                 </a> --}}
-                </div>
             </div>
-            <div class="sb-sidenav-footer">
-                <div class="small">Ingelogd als:</div>
-                {{ auth()->user()->name }}
-            </div>
-        </nav>
-    </div>
+        </div>
+        <div class="sb-sidenav-footer" style="background-color: rgb(57, 72, 151) !important">
+            <div class="small">Ingelogd als:</div>
+            {{ auth()->user()->name }}
+            <small><i>{{ auth()->user()->get_role_name() }}</i></small>
+        </div>
+    </nav>
+</div>
 @endsection()
 
 @section('footer')
-    <footer class="py-4 bg-light mt-auto">
-        <div class="container-fluid px-4">
-            <div class="d-flex align-items-center justify-content-between small">
-                <div class="text-muted">Copyright &copy; Rick Okkersen {{ date('Y') }}</div>
-            </div>
+<footer class="py-4 bg-light mt-auto">
+    <div class="container-fluid px-4">
+        <div class="d-flex align-items-center justify-content-between small">
+            <div class="text-muted">Copyright &copy; Rick Okkersen {{ date('Y') }}</div>
         </div>
-    </footer>
+    </div>
+</footer>
 @endsection()

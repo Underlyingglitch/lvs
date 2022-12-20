@@ -7,7 +7,7 @@
     <div class="container-fluid px-4">
         <h1 class="mt-4">
             Vragen
-            @can('questions.add')
+            @can('create', \App\Models\Question::class)
                 <a class="btn btn-success" href="{{ route('questions.create') }}"><i class="fas fa-plus"></i> Nieuw</a>
             @endcan
         </h1>
@@ -64,11 +64,11 @@
                                 <td>{{ Carbon\Carbon::parse($question->created_at) }}</td>
                                 <td>
                                     <a class="btn btn-sm btn-info"
-                                        href="{{ route('questions.show', ['id' => $question->id]) }}"><i
+                                        href="{{ route('questions.show', ['question' => $question->id]) }}"><i
                                             class="fas fa-info-circle"></i></a>
-                                    @can('questions.delete')
+                                    @can('delete', \App\Models\Question::class)
                                         <a class="btn btn-sm btn-danger"
-                                            href="{{ route('questions.delete', ['id' => $question->id]) }}"><i
+                                            href="{{ route('questions.delete', ['question' => $question->id]) }}"><i
                                                 class="fas fa-trash"></i></a>
                                     @endcan
                                 </td>

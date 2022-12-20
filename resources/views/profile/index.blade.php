@@ -19,7 +19,40 @@
                         Persoonlijke gegevens
                     </div>
                     <div class="card-body">
-                        <i>Binnenkort beschikbaar</i>
+                        <form action="{{ URL::signedRoute('profile.saveprofile') }}" method="post">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="name">Naam</label>
+                                    <input class="form-control" type="text" name="name" id="name" readonly
+                                        value="{{ auth()->user()->name }}">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="studentid">Leerlingnummer</label>
+                                    <input class="form-control" type="text" name="studentid" id="studentid" readonly
+                                        value="{{ auth()->user()->studentid }}">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="group">Klas</label>
+                                    <input class="form-control" type="text" name="group" id="group"
+                                        value="{{ auth()->user()->group }}">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <label for="email">Email adres</label>
+                                    <input class="form-control" type="text" name="email" id="email" readonly
+                                        value="{{ auth()->user()->email }}">
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label for="submit">&nbsp;</label>
+                                    <input class="form-control btn btn-primary" id="submit" type="submit"
+                                        value="Opslaan"><br>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -7,11 +7,11 @@
     <div class="container-fluid px-4">
         <h1 class="mt-4">
             Buddy details
-            @can('buddies.edit')
-                <a class="btn btn-warning" href="{{ route('buddies.edit', ['id' => $buddie->id]) }}">Bewerk</a>
+            @can('update', \App\Models\User::class)
+                <a class="btn btn-warning" href="{{ route('buddies.edit', ['buddie' => $buddie->id]) }}">Bewerk</a>
             @endcan
-            @can('buddies.delete')
-                <a class="btn btn-danger" href="{{ route('buddies.destroy', ['id' => $buddie->id]) }}">Verwijder</a>
+            @can('delete', \App\Models\User::class)
+                <a class="btn btn-danger" href="{{ route('buddies.destroy', ['buddie' => $buddie->id]) }}">Verwijder</a>
             @endcan
         </h1>
         <ol class="breadcrumb mb-4">
@@ -69,7 +69,8 @@
                             @foreach ($buddie->students as $student)
                                 <tr>
                                     <td>
-                                        <a class="btn-link" href="{{ route('students.show', ['id' => $student->id]) }}">
+                                        <a class="btn-link"
+                                            href="{{ route('students.show', ['student' => $student->id]) }}">
                                             {{ $student->name }} <i class="fas fa-arrow-up-right-from-square"></i>
                                         </a>
                                     </td>

@@ -21,11 +21,12 @@ Route::middleware('auth')->group(function(){
         Route::prefix('students')->group(function () {
             Route::name('students.')->group(function () {
                 Route::get('/', 'index')->name('index');
-                Route::get('/{id}', 'show')->name('show');
-                Route::get('/{id}/edit', 'edit')->name('edit');
-                Route::post('/{id}/edit', 'update');
-                Route::get('/{id}/delete', 'delete')->name('destroy');
-                Route::post('/{id}/delete', 'destroy');
+                Route::get('/{student}', 'show')->name('show');
+                Route::get('/{student}/edit', 'edit')->name('edit');
+                Route::post('/{student}/edit', 'update');
+                Route::get('/{student}/delete', 'delete')->name('destroy');
+                Route::post('/{student}/delete', 'destroy');
+                Route::post('/{student}/submitnotes', 'submitnotes')->name('submitnotes');
             });
         });
     });
@@ -34,11 +35,11 @@ Route::middleware('auth')->group(function(){
         Route::prefix('buddies')->group(function () {
             Route::name('buddies.')->group(function () {
                 Route::get('/', 'index')->name('index');
-                Route::get('/{id}', 'show')->name('show');
-                Route::get('/{id}/edit', 'edit')->name('edit');
-                Route::post('/{id}/edit', 'update');
-                Route::get('/{id}/delete', 'delete')->name('destroy');
-                Route::post('/{id}/delete', 'destroy');
+                Route::get('/{buddie}', 'show')->name('show');
+                Route::get('/{buddie}/edit', 'edit')->name('edit');
+                Route::post('/{buddie}/edit', 'update');
+                Route::get('/{buddie}/delete', 'delete')->name('destroy');
+                Route::post('/{buddie}/delete', 'destroy');
             });
         });
     });
@@ -49,11 +50,11 @@ Route::middleware('auth')->group(function(){
                 Route::get('/', 'index')->name('index');
                 Route::get('/create', 'create')->name('create');
                 Route::post('/create', 'store')->name('store');
-                Route::get('/{id}', 'show')->name('show');
-                Route::get('/{id}/edit', 'edit')->name('edit');
-                Route::post('/{id}/edit', 'update');
-                Route::get('/{id}/delete', 'delete')->name('delete');
-                Route::post('/{id}/delete/confirm', 'destroy')->name('destroy');
+                Route::get('/{user}', 'show')->name('show');
+                Route::get('/{user}/edit', 'edit')->name('edit');
+                Route::post('/{user}/edit', 'update');
+                Route::get('/{user}/delete', 'delete')->name('delete');
+                Route::post('/{user}/delete/confirm', 'destroy')->name('destroy');
             });
         });
     });
@@ -64,12 +65,12 @@ Route::middleware('auth')->group(function(){
                 Route::get('/', 'index')->name('index');
                 Route::get('/create', 'create')->name('create');
                 Route::post('/create', 'store')->name('store');
-                Route::get('/{id}', 'show')->name('show');
-                Route::post('/{id}/answer', 'answer')->name('answer');
-                Route::get('/{id}/answer/delete', 'delete_answer')->name('delete_answer');
-                Route::get('/{id}/publish', 'publish')->name('publish');
-                Route::get('/{id}/delete', 'delete')->name('delete');
-                Route::post('/{id}/delete/confirm', 'destroy')->name('destroy');
+                Route::get('/{question}', 'show')->name('show');
+                Route::post('/{question}/answer', 'answer')->name('answer');
+                Route::get('/{question}/answer/delete', 'delete_answer')->name('delete_answer');
+                Route::get('/{question}/publish', 'publish')->name('publish');
+                Route::get('/{question}/delete', 'delete')->name('delete');
+                Route::post('/{question}/delete/confirm', 'destroy')->name('destroy');
             });
         });
     });
@@ -89,6 +90,8 @@ Route::middleware('auth')->group(function(){
             Route::name('projects.')->group(function () {
                 Route::get('/', 'index')->name('index');
                 Route::post('/save', 'store')->name('store')->withoutMiddleware('checkproject');
+                Route::post('/{project}/savenotes', 'savenotes')->name('savenotes');
+                Route::get('/{project}', 'show')->name('show');
             });
         });
         Route::get('/project', 'own')->name('projects.own')->withoutMiddleware('checkproject');
@@ -107,6 +110,7 @@ Route::middleware('auth')->group(function(){
             Route::name('profile.')->group(function () {
                 Route::get('/', 'index')->name('index');
                 Route::post('/password', 'storepassword')->name('storepassword');
+                Route::post('/save', 'saveprofile')->name('saveprofile');
             });
         });
     });
@@ -117,11 +121,11 @@ Route::middleware('auth')->group(function(){
                 Route::get('/', 'index')->name('index');
                 Route::get('/create', 'create')->name('create');
                 Route::post('/create', 'store')->name('store');
-                Route::get('/{id}', 'show')->name('show');
-                Route::post('/{id}', 'update')->name('update');
-                Route::post('/{id}/prepare', 'prepare')->name('prepare');
-                Route::post('/{id}/addinvitees', 'addinvitees')->name('addinvitees');
-                Route::post('/{id}/removeinvitee', 'removeinvitee')->name('removeinvitee');
+                Route::get('/{conversation}', 'show')->name('show');
+                Route::post('/{conversation}', 'update')->name('update');
+                Route::post('/{conversation}/prepare', 'prepare')->name('prepare');
+                Route::post('/{conversation}/addinvitees', 'addinvitees')->name('addinvitees');
+                Route::post('/{conversation}/removeinvitee', 'removeinvitee')->name('removeinvitee');
             });
         });
     });

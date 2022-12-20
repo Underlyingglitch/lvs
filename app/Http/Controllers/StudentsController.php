@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\BuddyNote;
+use App\Models\TeacherNote;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class StudentsController extends Controller
 {
@@ -13,56 +14,46 @@ class StudentsController extends Controller
         $this->middleware(['auth']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        if (Gate::allows('students.view')) {
-            $students = User::role('student')->get();
-        } else if (Gate::allows('students.viewown')) {
+        if ($request->user()->can('viewAny', User::class)) {
+            $students = User::all()->where('role', '=', 'student');
+        } else if ($request->user()->can('viewOwn', User::class)) {
             $students = auth()->user()->students;
         } else {
             abort(403);
         }
-
-        // $students = Student::all();
 
         return view('students.index', [
             'students' => $students
         ]);
     }
 
-    public function show($id)
+    public function show(User $student)
     {
-        // $this->authorize('students.view');
-        //If not a teacher of a buddie
-        abort_if((Gate::denies('students.view') && Gate::denies('students.viewown')), 403);
+        $this->authorize('view', $student);
 
-        $student = User::find($id);
-        abort_if(($student->buddie->id != auth()->user()->id && Gate::denies('students.view')), 403);
+        if ($student->role != 'student') abort(404);
         
         return view('students.show', [
             'student' => $student
         ]);
     }
 
-    public function edit($id)
+    public function edit(User $student)
     {
-        $this->authorize('students.edit');
-
-        $student = User::find($id);
+        $this->authorize('update', $student);
 
         return view('students.edit', [
             'student' => $student,
-            'buddies' => User::role('buddie')->get()
+            'buddies' => User::where('role', '=', 'buddie')->get()
         ]);
     }
 
-    public function update($id, Request $request)
+    public function update(User $student, Request $request)
     {
-        $this->authorize('students.edit');
-
         abort_unless($request->hasValidSignature(), 401);
-
-        $student = User::find($id);
+        $this->authorize('update', $student);
 
         $student->group = $request->group;
         $student->studentid = $request->studentid;
@@ -77,28 +68,51 @@ class StudentsController extends Controller
         
         $student->save();
 
-        return redirect()->route('students.show', ['id' => $id]);
+        return redirect()->route('students.show', ['student' => $student->id]);
     }
 
-    public function delete($id)
+    public function delete(User $student)
     {
-        $this->authorize('students.delete');
-
-        $student = User::find($id);
+        $this->authorize('delete', $student);
 
         return view('students.delete', [
-            'Student' => $student
+            'student' => $student
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(User $student)
     {
-        $this->authorize('students.delete');
+        $this->authorize('delete', $student);
 
-        $buddie = User::find($id);
-
-        $buddie->delete();
+        $student->delete();
 
         return redirect()->view('students.index');
+    }
+
+    public function submitnotes(User $student, Request $request) {
+        $this->authorize('submitnotes', $student);
+
+        if (auth()->user()->role == 'teacher') {
+            if ($student->teacher_notes()->exists()) {
+                $student->teacher_notes->notes = $request->notes;
+            } else {
+                $student->teacher_notes = new TeacherNote([
+                    'user_id' => $student->id,
+                    'notes' => $request->notes
+                ]);
+            }
+            $student->teacher_notes->save();
+        } else {
+            if ($student->buddy_notes()->exists()) {
+                $student->buddy_notes->notes = $request->notes;
+            } else {
+                $student->buddy_notes = new BuddyNote([
+                    'user_id' => $student->id,
+                    'notes' => $request->notes
+                ]);
+            }
+            $student->buddy_notes->save();
+        }
+        return redirect()->back();
     }
 }

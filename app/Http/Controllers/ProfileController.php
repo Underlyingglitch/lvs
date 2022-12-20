@@ -37,4 +37,15 @@ class ProfileController extends Controller
         }
         return redirect()->back()->withErrors(['current_password' => 'Huidige wachtwoord is onjuist']);
     }
+
+    public function saveprofile(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+
+        $user->group = $request->group;
+
+        $user->save();
+
+        return redirect()->back();
+    }
 }

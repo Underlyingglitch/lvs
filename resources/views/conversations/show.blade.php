@@ -22,20 +22,24 @@
                     </div>
                     <div class="card-body">
                         <h5>Voorbereiding</h5>
-                        <form action="{{ route('conversations.prepare', ['id' => $conversation->id]) }}" method="post">
-                            @csrf
-                            <textarea class="form-control" name="preparation" placeholder="Voorbereiding" cols="30" rows="10">{{ $conversation->my_preparation ? $conversation->my_preparation->content : null }}</textarea>
-                            <input class="btn btn-primary" type="submit" value="Opslaan">
-                        </form>
+                        @can('create', [\App\Models\ConversationPreparation::class, $conversation])
+                            <form action="{{ route('conversations.prepare', ['conversation' => $conversation->id]) }}"
+                                method="post">
+                                @csrf
+                                <textarea class="form-control" name="preparation" placeholder="Voorbereiding" cols="30" rows="10">{{ $conversation->my_preparation ? $conversation->my_preparation->content : null }}</textarea>
+                                <input class="btn btn-primary" type="submit" value="Opslaan">
+                            </form>
+                        @endcan
                         @foreach ($conversation->preparations->where('user_id', '!=', auth()->user()->id) as $preparation)
                             <b>{{ $preparation->user->name }}
                                 <small>{{ \Carbon\Carbon::parse($preparation->created_at)->format('d-m-Y H:i') }}</small></b>
                             <div>{{ $preparation->content }}</div>
                             <hr>
                         @endforeach
-                        @if ($conversation->organizer->id == auth()->user()->id)
+                        @can('update', $conversation)
                             <h5>Gespreksverslag</h5>
-                            <form action="{{ route('conversations.update', ['id' => $conversation->id]) }}" method="post">
+                            <form action="{{ route('conversations.update', ['conversation' => $conversation->id]) }}"
+                                method="post">
                                 @csrf
                                 <textarea class="form-control" name="report" cols="30" rows="10">{{ $conversation->report }}</textarea>
                                 <input class="btn btn-primary" type="submit" value="Opslaan">
@@ -45,7 +49,7 @@
                                 <h5>Gespreksverslag</h5>
                                 {{ $conversation->report }}
                             @endif
-                        @endif
+                        @endcan
                     </div>
                 </div>
             </div>
@@ -63,22 +67,27 @@
                         <ul id="participants">
                             <li>{{ $conversation->organizer->name }} <span style="color: orange" data-toggle="tooltip"
                                     data-placement="top" title="Organisator"><i class="fas fa-crown"></i></span></li>
-                            <form action="{{ route('conversations.removeinvitee', ['id' => $conversation->id]) }}"
+
+                            <form
+                                action="{{ route('conversations.removeinvitee', ['conversation' => $conversation->id]) }}"
                                 method="post">
                                 @csrf
                                 @foreach ($conversation->invitees as $invitee)
-                                    <li>{{ $invitee->name }} @if ($conversation->report == null)
-                                            <input class="btn btn-sm btn-danger" type="submit" name="{{ $invitee->id }}"
-                                                value="Verwijder">
+                                    <li>{{ $invitee->name }}
+                                        @if ($conversation->report == null)
+                                            @can('update', $conversation)
+                                                <input class="btn btn-sm btn-danger" type="submit" name="{{ $invitee->id }}"
+                                                    value="Verwijder">
+                                            @endcan
                                         @endif
                                     </li>
                                 @endforeach
                             </form>
                         </ul>
-                        @if ($conversation->organizer_id == auth()->user()->id && $conversation->report == null)
+                        @if (auth()->user()->can('update', $conversation) && $conversation->report == null)
                             <hr>
 
-                            <form action="{{ route('conversations.addinvitees', ['id' => $conversation->id]) }}"
+                            <form action="{{ route('conversations.addinvitees', ['conversation' => $conversation->id]) }}"
                                 method="post">
                                 @csrf
                                 <label for="search">Voeg deelnemer toe</label>

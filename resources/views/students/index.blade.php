@@ -1,6 +1,8 @@
 @extends('inc.app')
 @php($page_id = 'students')
 
+@section('title', 'Leerlingen')
+
 @section('content')
     <div class="container-fluid px-4">
         <h1 class="mt-4">
@@ -69,16 +71,16 @@
                                 </td>
                                 <td>
                                     <a class="btn btn-sm btn-info"
-                                        href="{{ route('students.show', ['id' => $student->id]) }}"><i
+                                        href="{{ route('students.show', ['student' => $student->id]) }}"><i
                                             class="fas fa-info-circle"></i></a>
-                                    @can('students.edit')
+                                    @can('update', [\App\Models\User::class, $student])
                                         <a class="btn btn-sm btn-warning"
-                                            href="{{ route('students.edit', ['id' => $student->id]) }}"><i
+                                            href="{{ route('students.edit', ['student' => $student->id]) }}"><i
                                                 class="fas fa-pencil"></i></a>
                                     @endcan
-                                    @can('students.delete')
+                                    @can('delete', [\App\Models\User::class, $student])
                                         <a class="btn btn-sm btn-danger"
-                                            href="{{ route('students.destroy', ['id' => $student->id]) }}"><i
+                                            href="{{ route('students.destroy', ['student' => $student->id]) }}"><i
                                                 class="fas fa-trash"></i></a>
                                     @endcan
                                 </td>

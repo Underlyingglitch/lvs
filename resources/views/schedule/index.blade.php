@@ -15,6 +15,10 @@
         </ol>
 
         <div class="row">
+            @if (count($events) == 0)
+                <i>Geen lessen volgende week</i>
+                <br>
+            @endif
             @foreach ($events as $day => $events)
                 <div class="col-md-2">
                     <b>{{ date('D', strtotime($day)) }} {{ $day }}</b>

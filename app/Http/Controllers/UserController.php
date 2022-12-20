@@ -21,7 +21,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $this->authorize('users.view');
+        $this->authorize('viewAny', User::class);
 
         $users = User::all();
 
@@ -37,7 +37,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $this->authorize('users.create');
+        $this->authorize('create', User::class);
 
         return view('users.create', [
             'buddies' => User::role('buddie')->get()
@@ -52,7 +52,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('users.create');
+        $this->authorize('create', User::class);
 
         $user = new User();
 
@@ -77,6 +77,19 @@ class UserController extends Controller
             'user' => $user,
             'password' => $password
         ]);
+    }
+
+    public function changepassword(User $user)
+    {
+        // $user = User::find($id);
+        $this->authorize('changepassword', $user);
+
+        $new_password = Str::random(20);
+        $user->password = Hash::make($new_password);
+
+        $user->save();
+
+        return redirect()->back()->with('success', 'Wachtwoord gewijzigd. Nieuwe wachtwoord: '.$new_password);
     }
 
     /**

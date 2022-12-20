@@ -15,10 +15,10 @@ class ScheduleController extends Controller
         $this->middleware(['auth']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
         // return view('schedule.notready');
-        $this->authorize('schedule.view');
+        abort_unless(in_array(auth()->user()->role, ['student', 'buddie']), 403);
         $user = auth()->user();
         
         // TODO: implement caching
@@ -84,11 +84,10 @@ class ScheduleController extends Controller
         
     }
 
-    //!SECTION SAVE ROOSTER ACCOUNT
     public function post(Request $request)
     {
         //NOTE - Disabled functionality
-        return redirect()->back();
+        // return redirect()->back();
 
         $account = new SomTodayiCalAccount();
 
@@ -106,8 +105,8 @@ class ScheduleController extends Controller
     {
         // TODO: Implement request
         // abort(501, 'Feature not implemented');
+        abort_unless(in_array(auth()->user()->role, ['student', 'buddie']), 403);
 
-        $this->authorize('absencerequest.add');
         abort_unless($request->hasValidSignature(), 401);
 
         $absence_req = new AbsenceRequest();
