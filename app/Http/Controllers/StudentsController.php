@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\BuddyNote;
+use App\Models\TeacherNote;
 use Illuminate\Http\Request;
 
 class StudentsController extends Controller
@@ -44,7 +46,7 @@ class StudentsController extends Controller
 
         return view('students.edit', [
             'student' => $student,
-            'buddies' => User::role('buddie')->get()
+            'buddies' => User::where('role', '=', 'buddie')->get()
         ]);
     }
 
@@ -85,5 +87,32 @@ class StudentsController extends Controller
         $student->delete();
 
         return redirect()->view('students.index');
+    }
+
+    public function submitnotes(User $student, Request $request) {
+        $this->authorize('submitnotes', $student);
+
+        if (auth()->user()->role == 'teacher') {
+            if ($student->teacher_notes()->exists()) {
+                $student->teacher_notes->notes = $request->notes;
+            } else {
+                $student->teacher_notes = new TeacherNote([
+                    'user_id' => $student->id,
+                    'notes' => $request->notes
+                ]);
+            }
+            $student->teacher_notes->save();
+        } else {
+            if ($student->buddy_notes()->exists()) {
+                $student->buddy_notes->notes = $request->notes;
+            } else {
+                $student->buddy_notes = new BuddyNote([
+                    'user_id' => $student->id,
+                    'notes' => $request->notes
+                ]);
+            }
+            $student->buddy_notes->save();
+        }
+        return redirect()->back();
     }
 }

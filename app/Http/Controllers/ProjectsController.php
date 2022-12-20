@@ -80,4 +80,14 @@ class ProjectsController extends Controller
     {
         //
     }
+
+    public function savenotes(Project $project, Request $request)
+    {
+        if (auth()->user()->id != $project->id)redirect()->back();
+        
+        $project->notes = $request->notes;
+        $project->save();
+
+        return redirect()->back();
+    }
 }

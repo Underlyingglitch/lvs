@@ -116,4 +116,14 @@ class User extends Authenticatable implements Auditable
     {
         return $this->belongsToMany(Conversation::class);
     }
+
+    public function teacher_notes()
+    {
+        return $this->hasOne(TeacherNote::class);
+    }
+
+    public function buddy_notes()
+    {
+        return $this->hasOne(BuddyNote::class);
+    }
 }

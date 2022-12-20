@@ -60,4 +60,11 @@ class UserPolicy
     {
         return Response::deny('Je mag geen gebruikers verwijderen');
     }
+
+    public function submitnotes(User $user, User $model)
+    {
+        if ($user->role == 'teacher') return Response::allow();
+        if ($user->role == 'buddie' && $model->buddie_id == $user->id) return Response::allow();
+        return Response::deny('Je mag geen notities voor deze gebruiker toevoegen');
+    }
 }

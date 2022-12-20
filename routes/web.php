@@ -26,6 +26,7 @@ Route::middleware('auth')->group(function(){
                 Route::post('/{student}/edit', 'update');
                 Route::get('/{student}/delete', 'delete')->name('destroy');
                 Route::post('/{student}/delete', 'destroy');
+                Route::post('/{student}/submitnotes', 'submitnotes')->name('submitnotes');
             });
         });
     });
@@ -89,6 +90,8 @@ Route::middleware('auth')->group(function(){
             Route::name('projects.')->group(function () {
                 Route::get('/', 'index')->name('index');
                 Route::post('/save', 'store')->name('store')->withoutMiddleware('checkproject');
+                Route::post('/{project}/savenotes', 'savenotes')->name('savenotes');
+                Route::get('/{project}', 'show')->name('show');
             });
         });
         Route::get('/project', 'own')->name('projects.own')->withoutMiddleware('checkproject');
@@ -107,6 +110,7 @@ Route::middleware('auth')->group(function(){
             Route::name('profile.')->group(function () {
                 Route::get('/', 'index')->name('index');
                 Route::post('/password', 'storepassword')->name('storepassword');
+                Route::post('/save', 'saveprofile')->name('saveprofile');
             });
         });
     });

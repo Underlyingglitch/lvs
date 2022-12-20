@@ -67,12 +67,12 @@
                                     <a class="btn btn-sm btn-info"
                                         href="{{ route('buddies.show', ['buddie' => $buddie->id]) }}"><i
                                             class="fas fa-info-circle"></i></a>
-                                    @can('update', \App\Models\User::class)
+                                    @if (auth()->user()->role == 'teacher')
                                         <a class="btn btn-sm btn-warning"
                                             href="{{ route('buddies.edit', ['buddie' => $buddie->id]) }}"><i
                                                 class="fas fa-pencil"></i></a>
-                                    @endcan
-                                    @can('delete', \App\Models\User::class)
+                                    @endif
+                                    @can(auth()->user()->role == 'admin')
                                         <a class="btn btn-sm btn-danger"
                                             href="{{ route('buddies.destroy', ['buddie' => $buddie->id]) }}"><i
                                                 class="fas fa-trash"></i></a>

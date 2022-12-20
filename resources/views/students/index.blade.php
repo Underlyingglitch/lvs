@@ -73,12 +73,12 @@
                                     <a class="btn btn-sm btn-info"
                                         href="{{ route('students.show', ['student' => $student->id]) }}"><i
                                             class="fas fa-info-circle"></i></a>
-                                    @can('students.edit')
+                                    @can('update', [\App\Models\User::class, $student])
                                         <a class="btn btn-sm btn-warning"
                                             href="{{ route('students.edit', ['student' => $student->id]) }}"><i
                                                 class="fas fa-pencil"></i></a>
                                     @endcan
-                                    @can('students.delete')
+                                    @can('delete', [\App\Models\User::class, $student])
                                         <a class="btn btn-sm btn-danger"
                                             href="{{ route('students.destroy', ['student' => $student->id]) }}"><i
                                                 class="fas fa-trash"></i></a>
