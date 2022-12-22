@@ -92,7 +92,7 @@ class StudentsController extends Controller
     public function submitnotes(User $student, Request $request) {
         $this->authorize('submitnotes', $student);
 
-        if (auth()->user()->role == 'teacher') {
+        if (auth()->user()->role == 'teacher' || auth()->user()->role == 'admin') {
             if ($student->teacher_notes()->exists()) {
                 $student->teacher_notes->notes = $request->notes;
             } else {

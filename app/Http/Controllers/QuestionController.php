@@ -55,7 +55,7 @@ class QuestionController extends Controller
 
         $question->title = $request->title;
         $question->content = $request->content;
-        $question->school_year_id = SchoolYear::current();
+        $question->school_year_id = SchoolYear::current()->id;
 
         $question->save();
 

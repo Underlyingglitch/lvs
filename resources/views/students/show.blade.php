@@ -107,7 +107,7 @@
                     </div>
                 </div>
             </div>
-            @if (auth()->user()->role == 'teacher')
+            @if (auth()->user()->role == 'teacher' || auth()->user()->role == 'admin')
                 <div class="col-md-6">
                     <div class="card mb4">
                         <div class="card-header">
